@@ -64,6 +64,29 @@ int updateMotorSpeed(){
   return 0;
 }
 
+int driveWithShift(int directionShift) {
+    if (directionShift!=0){
+        if (directionShift<0){ //drifted left
+            double effectNeeded=((double)abs(directionShift))/boundarySum; // shows total shift and effect needed
+            // validate maybe if effect needed is over say 90 or 95 is it maybe a turn that have found
+            lMSpd=maxMotorSpeed;
+            rMSpd=maxMotorSpeed*(effectFactor*(1-effectNeeded));
+            updateMotorSpeed();
+            printf("Left drift Lm:%d Rm:%d Ef:%f",lMSpd,rMSpd,effectNeeded);
+        }else if (directionShift>0){ //drifted right
+            double effectNeeded=((double)directionShift)/boundarySum; // shows total shift and effect needed
+            lMSpd=maxMotorSpeed*(effectFactor*(1-effectNeeded));
+            rMSpd=maxMotorSpeed;
+            updateMotorSpeed();
+            printf("Right drift Lm:%d Rm:%d Ef:%f",lMSpd,rMSpd,effectNeeded);
+        }
+    } else { // if no shift
+        lMSpd = maxMotorSpeed;
+        rMSpd = maxMotorSpeed;
+    }
+    return 0;
+}
+
 int cameraScanner(){
   int max = 0;
   int min =255;
@@ -119,22 +142,7 @@ int cameraScanner(){
   }
   int directionShift=leftShift-rightShift;
   // negative is drifted left +is drifted to right
-  if (directionShift!=0){
-    if (directionShift<0){ //drifted left
-        double effectNeeded=((double)abs(directionShift))/boundarySum; // shows total shift and effect needed
-        // validate maybe if effect needed is over say 90 or 95 is it maybe a turn that have found
-        lMSpd=maxMotorSpeed;
-        rMSpd=maxMotorSpeed*(effectFactor*(1-effectNeeded));
-        updateMotorSpeed();
-        printf("Left drift Lm:%d Rm:%d Ef:%f",lMSpd,rMSpd,effectNeeded);
-    }else if (directionShift>0){ //drifted right
-        double effectNeeded=((double)directionShift)/boundarySum; // shows total shift and effect needed
-        lMSpd=maxMotorSpeed*(effectFactor*(1-effectNeeded));
-        rMSpd=maxMotorSpeed;
-        updateMotorSpeed();
-        printf("Right drift Lm:%d Rm:%d Ef:%f",lMSpd,rMSpd,effectNeeded);
-    }
-  }
+  driveWithShift(directionShift);
   
 //   for (int i = 0; i <320;i++)
 // {
@@ -143,8 +151,6 @@ int cameraScanner(){
 //   printf("\n");
   return 0;
 }
-
-
 
 int main (){
   int x=0;
