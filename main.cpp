@@ -18,54 +18,45 @@ int readRange=(CAMERA_WIDTH/2)-midCameraBlind;
 int boundarySum=(readRange*(readRange+1))/2;
 double effectFactor=1; //the factor that correction effect is 0-100% (0- to 1)
 
-int main (){
-  int x=0;
-while (x<1000) {
-  take_picture();
-  cameraScanner();
-  x++;
-}
-return 0;
-}
 
 // returns color component (color==0 -red,color==1-green,color==2-blue
 // color == 3 - luminocity
 // for pixel located at (row,column)
-unsigned char get_pixel( int row,int col, int color)
-{
-    // calculate address in 1D array of pixels
-    int address = CAMERA_WIDTH*row*3 + col*3;
-    if ((row < 0 ) || (row > CAMERA_HEIGHT) )
-    {
-        printf("row is out of range\n");
-        return -1;
-    }
-    if ( (col< 0) || (col > CAMERA_WIDTH))
-    {
-        printf("column is out of range\n");
-        return -1;
-    }
-
-    if (color==0)
-    {
-        return (pixels_buf[address]);
-    }
-    if (color==1)
-    {
-        return (pixels_buf[address + 1]);
-    }
-    if (color==2)
-    {
-        return (pixels_buf[address + 2]);
-    }
-    if (color==3)
-    {
-        unsigned char y = (pixels_buf[address] + pixels_buf[address+1] +pixels_buf[address+2])/3;
-        return y;
-    }
-    printf("Color encoding wrong: 0-red, 1-green,2-blue,3 - luminosity\n");
-    return -2; //error
-}
+// unsigned char get_pixel( int row,int col, int color)
+// {
+//     // calculate address in 1D array of pixels
+//     int address = CAMERA_WIDTH*row*3 + col*3;
+//     if ((row < 0 ) || (row > CAMERA_HEIGHT) )
+//     {
+//         printf("row is out of range\n");
+//         return -1;
+//     }
+//     if ( (col< 0) || (col > CAMERA_WIDTH))
+//     {
+//         printf("column is out of range\n");
+//         return -1;
+//     }
+// 
+//     if (color==0)
+//     {
+//         return (pixels_buf[address]);
+//     }
+//     if (color==1)
+//     {
+//         return (pixels_buf[address + 1]);
+//     }
+//     if (color==2)
+//     {
+//         return (pixels_buf[address + 2]);
+//     }
+//     if (color==3)
+//     {
+//         unsigned char y = (pixels_buf[address] + pixels_buf[address+1] +pixels_buf[address+2])/3;
+//         return y;
+//     }
+//     printf("Color encoding wrong: 0-red, 1-green,2-blue,3 - luminosity\n");
+//     return -2; //error
+// }
 
 int updateMotorSpeed(){
   set_motor(1,lMSpd);
@@ -150,5 +141,17 @@ int cameraScanner(){
 //   printf("%d ",whi[i]);
 //   }
 //   printf("\n");
+  return 0;
+}
+
+
+
+int main (){
+  int x=0;
+  while (x<1000) {
+    take_picture();
+    cameraScanner();
+    x++;
+  }
   return 0;
 }
