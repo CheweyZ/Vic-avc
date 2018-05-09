@@ -66,7 +66,11 @@ unsigned char get_pixel( int row,int col, int color)
     return -2; //error
 }
 
-
+int updateMotorSpeed(){
+  set_motor(1,lMSpd);
+  set_motor(2,rMSpd);
+  return 0;
+}
 
 int cameraScanner(){
   int max = 0;
@@ -129,11 +133,13 @@ int cameraScanner(){
         // validate maybe if effect needed is over say 90 or 95 is it maybe a turn that have found
         lMSpd=maxMotorSpeed;
         rMSpd=maxMotorSpeed*(effectFactor*(1-effectNeeded));
+        updateMotorSpeed();
         printf("Left drift Lm:%d Rm:%d Ef:%f",lMSpd,rMSpd,effectNeeded);
     }else if (directionShift>0){ //drifted right
         double effectNeeded=((double)directionShift)/boundarySum; // shows total shift and effect needed
         lMSpd=maxMotorSpeed*(effectFactor*(1-effectNeeded));
         rMSpd=maxMotorSpeed;
+        updateMotorSpeed();
         printf("Right drift Lm:%d Rm:%d Ef:%f",lMSpd,rMSpd,effectNeeded);
     }
   }
