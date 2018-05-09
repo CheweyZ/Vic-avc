@@ -1,8 +1,8 @@
 //initing the adc reading values
 int scan_front;
-int scan_right1;
+int scan_right1; //front of the right scans
 int scan_right2;
-int scan_left1;
+int scan_left1; //front of the left scans
 int scan_left2;
 
 // input numbers to change on prop code
@@ -25,21 +25,25 @@ int mazeSection()
 	scan_left2 = read_analog(l2);
 
 // Tests sensing for wall infront
-	if (scan_front > 100 )
+	if (scan_front > distFromWall )
 	{
-// When finds one -> sensors for walls on either side
-// Turns that direction
+		if (scan_right1 < distFromWall) //there seems to be no wall there
+		{
+			while (/*while dist from wall is particular amount*/)
+			{
+				//turn
+			}
+		} else if (scan_left1 < distFromWall)
+		{
+			while (/*while dist from wall is particular amount*/)
+			{
+				//turn
+			}
+		}
+
+
 	}
 
-	
-//tests if back and front sensors are give too big a difference 
-//realligns to fix
-//does this for both sizes & both ways arround (back is bigger/front is bigger)
-	if() {
-
-	}
-	
-	
 // Tests for pink tape 
 	if (/*test for pink tape below*/)
 	{
@@ -47,9 +51,12 @@ int mazeSection()
 //    Then waits till door is open
 //    Wait afew more secs
 //    Then continues on its way
+
+
+//checks for the second
 	}
-
-
 	sleep1(0,sleepAmount);
 	return 0;
 }
+
+
