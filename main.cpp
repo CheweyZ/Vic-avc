@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include "E101.h"
 // testing pic3.ppm right drift 
 // picq.ppm left drift
 // pick.ppm is left turn
