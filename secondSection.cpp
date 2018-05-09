@@ -18,8 +18,6 @@ int sleepAmount = 10000;
 
 int mazeSection()
 {
-
-
 	scan_front = read_analog(f); 
 	scan_right1 = read_analog(r1);
 	scan_right2 = read_analog(r2);
@@ -33,6 +31,15 @@ int mazeSection()
 // Turns that direction
 	}
 
+	
+//tests if back and front sensors are give too big a difference 
+//realligns to fix
+//does this for both sizes & both ways arround (back is bigger/front is bigger)
+	if() {
+
+	}
+	
+	
 // Tests for pink tape 
 	if (/*test for pink tape below*/)
 	{
