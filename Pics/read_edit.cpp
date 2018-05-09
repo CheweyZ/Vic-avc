@@ -17,6 +17,7 @@ int rMSpd=maxMotorSpeed;
 int readRange=(CAMERA_WIDTH/2)-midCameraBlind;
 // Sum 1 to n  https://betterexplained.com/articles/techniques-for-adding-the-numbers-1-to-100/
 int boundarySum=(readRange*(readRange+1))/2;
+double effectFactor=1; //the factor that correction effect is 0-100% (0- to 1)
 
 // returns color component (color==0 -red,color==1-green,color==2-blue
 // color == 3 - luminocity
@@ -79,30 +80,49 @@ int cameraScanner(){
   // int whi[320];  // white pixels
   int midLeftPoint=(CAMERA_WIDTH/2)-midCameraBlind;
   int midRightPoint=(CAMERA_WIDTH/2)+midCameraBlind;
-  int leftShift,rightShift=0;
+  printf("MidLeftPoint:%d MidRightPoint:%d\n", midLeftPoint,midRightPoint);
+  int leftShift=0;
+  int rightShift=0;
   for (int i = 0; i <320;i++){
   // whi[i]= 0 ;
   int pix = get_pixel(scan_row,i,3);
   if ( pix > thr){
     if (i<midLeftPoint){
-      leftShift+=i;
+      leftShift+=midLeftPoint-i;
+      // printf("LShift:%d Rshift:%d\n", leftShift,rightShift);
     }else if(i>midRightPoint){
-      rightShift+=i;
+      rightShift+=i-midRightPoint;
     }
     // whi[i] = 1;
   }
+  }
+  printf("LShift:%d Rshift:%d\n", leftShift,rightShift);
+  // possible check on these is if called read a row a bit above then determine if foward is also option (maybe a function just to return if white strip)
+  if (leftShift==boundarySum&& rightShift==boundarySum){ // at a 2 way intersection (should check if can go ahead so look a line up)
+    // As C cant return 2 values instead need to copy code (so effecent) with recalulation for a some row up to determin if
+    // can go foward or if its only a T
+    printf("I can turn both ways\n");
+  }else if (leftShift==boundarySum){
+    // left turn option
+    printf("I can turn left\n");
+  }else if (rightShift==boundarySum){
+    // right turn option
+    printf("I can turn right\n");
+  }else if (rightShift==0&& leftShift==0){
+    printf("Lets check is there still a path here?\n");
   }
   int directionShift=leftShift-rightShift;
   // negative is drifted left +is drifted to right
   if (directionShift!=0){
     if (directionShift<0){ //drifted left
-        double effectNeeded=abs(directionShift)/boundarySum; // shows total shift and effect needed
+        double effectNeeded=((double)abs(directionShift))/boundarySum; // shows total shift and effect needed
+        // validate maybe if effect needed is over say 90 or 95 is it maybe a turn that have found
         lMSpd=maxMotorSpeed;
-        rMSpd=maxMotorSpeed*(1-effectNeeded);
-        printf("Left drift Lm:%d Rm:%d",lMSpd,rMSpd);
+        rMSpd=maxMotorSpeed*(effectFactor*(1-effectNeeded));
+        printf("Left drift Lm:%d Rm:%d Ef:%f",lMSpd,rMSpd,effectNeeded);
     }else if (directionShift>0){ //drifted right
-        double effectNeeded=directionShift/boundarySum; // shows total shift and effect needed
-        lMSpd=maxMotorSpeed*(1-effectNeeded);
+        double effectNeeded=((double)directionShift)/boundarySum; // shows total shift and effect needed
+        lMSpd=maxMotorSpeed*(effectFactor*(1-effectNeeded));
         rMSpd=maxMotorSpeed;
         printf("Right drift Lm:%d Rm:%d Ef:%f",lMSpd,rMSpd,effectNeeded);
     }
