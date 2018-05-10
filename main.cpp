@@ -64,6 +64,13 @@ int updateMotorSpeed(){
   return 0;
 }
 
+int processExit(){
+  rMSpd=0;
+  lMSpd=0;
+  updateMotorSpeed();
+  return 0;
+}
+
 int driveWithShift(int directionShift) {
     if (directionShift!=0){
         if (directionShift<0){ //drifted left
@@ -155,10 +162,11 @@ int cameraScanner(){
 int main (){
   int x=0;
   init();
-  while (x<1000) {
+  while (x<20) {
     take_picture();
     cameraScanner();
     x++;
   }
+  processExit();
   return 0;
 }
