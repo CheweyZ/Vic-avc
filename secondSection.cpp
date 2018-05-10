@@ -18,8 +18,17 @@ int rightMotor = 6;
 int distFromWall = 600;
 int distFromSideWall = 100;
 int sleepAmount = 10000;
+int turning = 0 //(-ve(Left),0(Straight),+ve(Right))
 
-int turn(int speed){
+int turn(int lSpeed, rSpeed){	//change to main codes turn
+	printf("%d\n", lSpeed);
+	printf("%d\n", rSpeed);
+		//set_motor(rightMotor,lSpeed);
+		//set_motor(leftMotor,rSpeed);
+	return 0;
+}
+int turnOnSpot(int speed){
+	printf("%d\n", speed);
 	//set_motor(leftMotor,speed);
 	//set_motor(rightMotor,(-1)*speed);
 	return 0;
@@ -28,9 +37,9 @@ int turn(int speed){
 int mazeSection()
 {
 	scan_front = read_analog(f); 
-	scan_right1 = read_analog(r1);
+	scan_right1 = read_analog(r1); //front right
 	scan_right2 = read_analog(r2);
-	scan_left1 = read_analog(l1);
+	scan_left1 = read_analog(l1); //front left
 	scan_left2 = read_analog(l2);
 
 // Tests sensing for wall infront
@@ -38,44 +47,49 @@ int mazeSection()
 	{
 		if (scan_right1 < distFromSideWall) //there seems to be no wall there
 		{
-			while (/*while dist from wall is particular amount*/)
-			{
-				turn(100);
-			}
-			turn(0);
-		} else if (scan_left1 < distFromSideWall)
+			turning = 1;
+		} 
+		else if (scan_left1 < distFromSideWall)
 		{
-			while (/*while dist from wall is particular amount*/)
-			{
-				turn(100);
-			}
-			turn(0);
+			turning = -1;
 		}
 
 
 	}
 
 
-//reallign if front/back is too close on one side if nec
-	if (/* condition */)
+//reallign if front(/back) is too close on one side if nec
+	if (scan_left1 < distFromWall && turning == 0)
 	{
-		/* code */
+		/* turn right */
+		turn(100,10);
+	}
+	else if (scan_right1 < distFromWall && turning == 0)
+	{
+		// turn left
+		turn(10,100);
+
 	}
 
-
-
-
-// Tests for pink tape 
-	if (/*test for pink tape below*/)
+	if (turning == 1)
 	{
-//    Waits till door is closed
-//    Then waits till door is open
-//    Wait afew more secs
-//    Then continues on its way
-
-
-//checks for the second
+		if (scan_front < distFromWall)
+		{
+			turning == 0;
+		}	
 	}
+	else if (turning == -1)
+	{
+		if (scan_front < distFromWall)
+		{
+			turning == 0;
+		}
+	}
+	
 	sleep1(0,sleepAmount);
+	if (turning = 0)
+	{
+		forward();
+	}
 	return 0;
 }
