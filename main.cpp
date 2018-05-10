@@ -59,8 +59,8 @@ double effectFactor=1; //the factor that correction effect is 0-100% (0- to 1)
 // }
 
 int updateMotorSpeed(){
-  set_motor(1,lMSpd);
-  set_motor(2,rMSpd);
+  set_motor(1,rMSpd);
+  set_motor(2,lMSpd);
   return 0;
 }
 
