@@ -162,7 +162,7 @@ int cameraScanner(){
 int main (){
   int x=0;
   init();
-  while (x<20) {
+  while (x<500) {
     take_picture();
     cameraScanner();
     x++;
