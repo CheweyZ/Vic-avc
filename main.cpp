@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <math.h>
 #include "E101.h"
 // testing pic3.ppm right drift 
 // picq.ppm left drift
@@ -16,16 +15,8 @@ int lMSpd=maxMotorSpeed;
 int rMSpd=maxMotorSpeed;
 int readRange=(CAMERA_WIDTH/2)-midCameraBlind;
 // Sum 1 to n  https://betterexplained.com/articles/techniques-for-adding-the-numbers-1-to-100/
-// int boundarySum=(readRange*(readRange+1))/2;
-// https://socratic.org/questions/how-do-you-find-the-nth-term-rule-for-1-2-4-8-16-32-64
-int boundarySum=pow(2,readRange-1);
+int boundarySum=(readRange*(readRange+1))/2;
 double effectFactor=1; //the factor that correction effect is 0-100% (0- to 1)
-
-int midLeftPoint=(CAMERA_WIDTH/2)-midCameraBlind;
-int midRightPoint=(CAMERA_WIDTH/2)+midCameraBlind;
-
-int midLeftScorePoint=pow(2,midLeftPoint);
-int midRightScorePoint=pow(2,midRightPoint);
 
 
 // returns color component (color==0 -red,color==1-green,color==2-blue
@@ -123,7 +114,9 @@ int cameraScanner(){
   printf("min=%d max=%d threshold=%d\n", min, max,thr);
   
   // int whi[320];  // white pixels
-  
+  int midLeftPoint=(CAMERA_WIDTH/2)-midCameraBlind;
+  int midRightPoint=(CAMERA_WIDTH/2)+midCameraBlind;
+  printf("MidLeftPoint:%d MidRightPoint:%d\n", midLeftPoint,midRightPoint);
   int leftShift=0;
   int rightShift=0;
   for (int i = 0; i <320;i++){
@@ -131,10 +124,10 @@ int cameraScanner(){
   int pix = get_pixel(scan_row,i,3);
   if ( pix > thr){
     if (i<midLeftPoint){
-      leftShift+=midLeftScorePoint-i*2;
+      leftShift+=midLeftPoint-i;
       // printf("LShift:%d Rshift:%d\n", leftShift,rightShift);
     }else if(i>midRightPoint){
-      rightShift+=i*2-midRightScorePoint;
+      rightShift+=i-midRightPoint;
     }
     // whi[i] = 1;
   }
@@ -169,7 +162,6 @@ int cameraScanner(){
 int main (){
   int x=0;
   init();
-  printf("MidLeftPoint:%d MidRightPoint:%d\n", midLeftPoint,midRightPoint);
   while (x<20) {
     take_picture();
     cameraScanner();
