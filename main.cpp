@@ -79,13 +79,13 @@ int driveWithShift(int directionShift) {
             lMSpd=maxMotorSpeed;
             rMSpd=maxMotorSpeed*(effectFactor*(1-effectNeeded));
             updateMotorSpeed();
-            printf("Left drift Lm:%d Rm:%d Ef:%f",lMSpd,rMSpd,effectNeeded);
+            printf("Left drift Lm:%d Rm:%d Ef:%f dS:%d\n",lMSpd,rMSpd,effectNeeded,directionShift);
         }else if (directionShift>0){ //drifted right
             double effectNeeded=((double)directionShift)/boundarySum; // shows total shift and effect needed
             lMSpd=maxMotorSpeed*(effectFactor*(1-effectNeeded));
             rMSpd=maxMotorSpeed;
             updateMotorSpeed();
-            printf("Right drift Lm:%d Rm:%d Ef:%f",lMSpd,rMSpd,effectNeeded);
+            printf("Right drift Lm:%d Rm:%d Ef:%f dS:%d\n",lMSpd,rMSpd,effectNeeded,directionShift);
         }
     } else { // if no shift
         lMSpd = maxMotorSpeed;
