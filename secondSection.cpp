@@ -19,7 +19,6 @@ int sleepAmount = 10000;
 int mazeSection()
 {
 
-
 	scan_front = read_analog(f); 
 	scan_right1 = read_analog(r1);
 	scan_right2 = read_analog(r2); 
@@ -36,6 +35,7 @@ int mazeSection()
 
 // Tests for pink tape 
 	if (/*test for pink tape below*/)
+		
 	{
 //    Waits till door is closed
 //    Then waits till door is open
