@@ -10,7 +10,7 @@
 #define CAMERA_HEIGHT 240 //Control Resolution from Camera
 // unsigned char pixels_buf[CAMERA_WIDTH*CAMERA_HEIGHT*4];
 int midCameraBlind=10;
-int maxMotorSpeed=255;
+int maxMotorSpeed=50;
 int lMSpd=maxMotorSpeed;
 int rMSpd=maxMotorSpeed;
 int readRange=(CAMERA_WIDTH/2)-midCameraBlind;
