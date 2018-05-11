@@ -12,8 +12,8 @@ int r2 = 2;
 int l1 = 3;
 int l2 = 4;
 // input pin numbers for motors to change on prop code
-int leftMotor = 5;
-int rightMotor = 6;
+int leftMotor = 1;
+int rightMotor = 2;
 
 int distFromWall = 600;
 int distFromSideWall = 100;
