@@ -1,4 +1,5 @@
 //conecting to the gate started working on it
+// 130.195.6.196
 //port is 1024 from arthur
 //password is Please
 //Supposedly supposed to be 5 lines of code
