@@ -59,6 +59,7 @@ int mazeSection()
 
 
 //reallign if front(/back) is too close on one side if nec
+//needs turning test
 	if (scan_left1 < distFromWall && turning == 0)
 	{
 		/* turn right */
@@ -84,12 +85,10 @@ int mazeSection()
 		{
 			turning == 0;
 		}
-	}
-	
-	sleep1(0,sleepAmount);
-	if (turning = 0)
+	}else 	if (turning = 0)
 	{
 		forward();
 	}
+	sleep1(0,sleepAmount);
 	return 0;
 }
