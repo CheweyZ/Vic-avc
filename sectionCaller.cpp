@@ -11,25 +11,25 @@ int main()
 	{
 		if (sectionNum == 1)
 		{ //before gate
-			//call door
-			//follow line
+			/*call door*/
+			/*follow line*/
 		}
 		else if (sectionNum == 2)
 		{ //follow line
-			//call follow line
+			/*call follow line*/
 		}
 		else if (sectionNum == 3)
 		{ //follow sharp line
-			//call follow sharp line
+			/*call follow sharp line*/
 		}
 		else if (sectionNum == 4)
 		{ //follow maze before gate
-			// redline door test
-			// maze section code
+			/*redline door test*/
+			//mazeSection();
 		}
 		else if (sectionNum == 5)
 		{ //follow maze after gate
-			//maze section code
+			//mazeSection();
 		}
 		sleep1(0,sleepAmount);
 	}
