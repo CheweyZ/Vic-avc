@@ -34,7 +34,7 @@ int sharpLineTest() {
 //CODE BEGINS
 //Main method structure= call cameraScanner(), pass result through sharpLine(). Call turn(String direction)
 
-int sharpLine() {
+void sharpLine() {
 	int closeScan = cameraScanner(70);
 	//checks against close line test with the updated shift variables. Then tests the line further away if necessary and checks again,
 	if (leftShift >= boundarySum && rightShift >= boundarySum){ //this is a t intersection -> always turn left
