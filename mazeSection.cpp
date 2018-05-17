@@ -23,7 +23,7 @@ int rightMotor = 6;
 int distFromWall = 600;
 int distFromSideWall = 100;
 int sleepAmount = 10000;
-int turning = 0 //(-ve(Left),0(Straight),+ve(Right))
+int turning = 0; //(-ve(Left),0(Straight),+ve(Right))
 
 int loopForceTimer = 100000;
 
