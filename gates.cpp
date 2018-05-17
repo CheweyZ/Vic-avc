@@ -1,3 +1,4 @@
+//big tidy up is required. 
 //conecting to the gate started working on it
 // 130.195.6.196
 //port is 1024 from arthur
@@ -18,6 +19,7 @@ int updateMotorSpeed() {
 
 
 //started working then realised that I wasnt working in atom lol.
+//
 int walltest = 0;
 //testing if the gate is present in the code. 
 int (int walltest) { 
