@@ -143,11 +143,13 @@ int main (){
   scan_left1 = 200; //front left
   int x=0;
   init();
-  while (x<loopForceTimer) {
+  mazeSection();
+  printf("%s\n", turning);
+  /*while (x<loopForceTimer) {
     mazeSection();
 
     sleep1(0,sleepAmount);
     x++;
-  }
+  }*/
 return 0;
 }
