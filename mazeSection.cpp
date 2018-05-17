@@ -57,7 +57,6 @@ void scanValueUpdate()
   //scan_right2 = read_analog(r2);
   //scan_left1 = read_analog(l1); //front left
   //scan_left2 = read_analog(l2);
-  printf("update values");
 }
 
 void testTurn(){
