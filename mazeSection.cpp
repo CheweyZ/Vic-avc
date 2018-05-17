@@ -63,11 +63,11 @@ void testTurn(){
   // Tests sensing for wall infront
   if (scan_front > distFromWall ) //if robot is too close to the wall
   {
-    if (scan_right1 < distFromSideWall) //there seems to be no wall there
+    if (scan_right1 > distFromSideWall) //there seems to be no wall there
     {
       turning = 1;
     } 
-    else if (scan_left1 < distFromSideWall)
+    else if (scan_left1 > distFromSideWall)
     {
       turning = -1;
     }
