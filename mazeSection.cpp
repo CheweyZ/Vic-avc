@@ -5,20 +5,17 @@
 
 //initing the adc reading values
 int scan_front;
-int scan_right1; //front of the right scans
-int scan_right2;
-int scan_left1; //front of the left scans
-int scan_left2;
+int scan_right;
+int scan_left;
 
 // input pin numbers to change on prop code
 int f = 0;
-int r1 = 1;
-int r2 = 2;
-int l1 = 3;
-int l2 = 4;
+int r = 1;
+int l = 2;
+
 // input pin numbers for motors to change on prop code
-int leftMotor = 5;
-int rightMotor = 6;
+int leftMotor = 1;
+int rightMotor = 2;
 
 int distFromWall = 600;
 int distFromSideWall = 100;
@@ -52,32 +49,30 @@ void turnOnSpot(int speed){
 void scanValueUpdate()
 {
 // updating values
-  //scan_front = read_analog(f); 
-  //scan_right1 = read_analog(r1); //front right
-  //scan_right2 = read_analog(r2);
-  //scan_left1 = read_analog(l1); //front left
-  //scan_left2 = read_analog(l2);
+  //scan_front = read_analog(f); // front
+  //scan_right = read_analog(r); // right
+  //scan_left = read_analog(l); // left
 }
 
 void testTurn(){
   // Tests sensing for wall infront
   if (scan_front > distFromWall ) //if robot is too close to the wall
   {
-    if (scan_right1 > distFromSideWall) //there seems to be no wall there
+    if (scan_right > distFromSideWall) //there seems to be no wall there
     {
       turning = 1;
     } 
-    else if (scan_left1 > distFromSideWall)
+    else if (scan_left > distFromSideWall)
     {
       turning = -1;
     }
   }
   //reallign if front(/back) is too close on one side if nec
-  if (scan_left1 > distFromWall && turning == 0)
+  if (scan_left > distFromWall && turning == 0)
   { // realign right
     turning = -2;
   }
-  else if (scan_right1 > distFromWall && turning == 0)
+  else if (scan_right > distFromWall && turning == 0)
   { // realign left
     turning = 2;
   }
@@ -104,7 +99,7 @@ void mazeMove(){
   else if (turning == 2) //realign left
   {
     turn(100,50);
-    if (scan_right1 < distFromSideWall)
+    if (scan_right < distFromSideWall)
     { // if scan of each wall is roughly similar
       turning == 0;
     }
@@ -112,7 +107,7 @@ void mazeMove(){
   else if (turning == -2) //realign right
   {
     turn(50,100);
-    if (scan_left1 < distFromSideWall)
+    if (scan_left < distFromSideWall)
     {
       turning == 0;
     }
@@ -135,7 +130,7 @@ void mazeSection()
 }
 
 ////////////////////////
-//main
+// main
 ////////////////////////
 int main (){
   init();
@@ -144,11 +139,11 @@ int main (){
   //  for (int j = 0; j < 10; ++j)
   //  {
   //  scan_front = i*50+300; //numbers are smaller further away 
-  //  scan_right1 = j*50; //front right
-  //  scan_left1 = 100; //front left
+  //  scan_right = j*50; //front right
+  //  scan_left = 100; //front left
   //  int x=0;
   mazeSection();
-  //  printf("front: %d left: %d right: %d turnNum: %d\n",scan_front,scan_left1,scan_right1,turning);
+  //  printf("front: %d left: %d right: %d turnNum: %d\n",scan_front,scan_left,scan_right,turning);
 
   //  }
   //}
