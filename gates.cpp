@@ -13,3 +13,8 @@ if (send_to_server == true){
   printf("This is supposed to work I believe\n", );
 
 }
+
+
+//needs to test for wall infront before sending message
+//continues moving after wall goes up (also after delay)
+//changes section number
