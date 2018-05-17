@@ -143,7 +143,7 @@ int main (){
   {
     for (int j = 0; j < 10; ++j)
     {
-    scan_front = i*50; //numbers are smaller further away 
+    scan_front = i*50+300; //numbers are smaller further away 
     scan_right1 = j*50; //front right
     scan_left1 = 100; //front left
     int x=0;
