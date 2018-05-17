@@ -68,14 +68,24 @@ void testTurn(){
     }
   }
   //reallign if front(/back) is too close on one side if nec
-  if (scan_left > distFromWall && turning == 0)
+  //change code to mayb?
+  if (scan_left > scan_right + mazeCentraliseThreshold && scan_right > noWallSenseThreshold && turning == 0)
+  { // realign right
+    turning = -2;
+  }
+  else if (scan_right > scan_right + mazeCentraliseThreshold && scan_right > noWallSenseThreshold && turning == 0)
+  { // realign left
+    turning = 2;
+  }
+  /*if (scan_left > distFromWall && turning == 0) //change to test to adjust when: one side is bigger than the other, no side is giving ~0 (gap in wall) and is not turning
   { // realign right
     turning = -2;
   }
   else if (scan_right > distFromWall && turning == 0)
   { // realign left
     turning = 2;
-  }
+  }*/
+
 }
 
 void mazeMove(){
