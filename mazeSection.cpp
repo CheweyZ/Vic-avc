@@ -138,13 +138,20 @@ void mazeSection()
 //main
 ////////////////////////
 int main (){
-  scan_front = 100; //numbers are smaller further away 
-  scan_right1 = 200; //front right
-  scan_left1 = 200; //front left
-  int x=0;
   init();
-  mazeSection();
-  printf("front: %d left: %d right: %d turnNum: %d\n",scan_front,scan_left1,scan_right1,turning);
+  for (int i = 0; i < 10; ++i)
+  {
+    for (int j = 0; j < 10; ++j)
+    {
+    scan_front = i*50; //numbers are smaller further away 
+    scan_right1 = j*50; //front right
+    scan_left1 = 100; //front left
+    int x=0;
+    mazeSection();
+    printf("front: %d left: %d right: %d turnNum: %d\n",scan_front,scan_left1,scan_right1,turning);
+
+    }
+  }
   /*while (x<loopForceTimer) {
     mazeSection();
 
