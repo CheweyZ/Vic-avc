@@ -144,7 +144,7 @@ int main (){
   int x=0;
   init();
   mazeSection();
-  printf("%s\n", turning);
+  printf("%d\n", turning);
   /*while (x<loopForceTimer) {
     mazeSection();
 
