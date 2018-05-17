@@ -23,7 +23,7 @@ int lowerBoundarySum = 100; //used to check if a line is present at all
 
 //TEST FOR FIRST SECTION CHANGE
 
-int sharpLineTest() {
+void sharpLineTest() {
 	int whiteMagnitude = leftShift + rightShift;
 	printf("whiteMagnitude = %d\n", whiteMagnitude);
 	if (whiteMagnitude > 1500) {
