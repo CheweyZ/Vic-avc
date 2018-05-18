@@ -3,13 +3,6 @@
 #include <ctype.h>
 #include "E101.h"
 
-int main()
-{
-	init();
-	passwordGate();
-	return 0;
-}
-
 void passwordGate(){
 	char serverAddr[15]={'1','3','0','.','1','9','5','.','6','.','1','9','6'};
 	char message[24]={'P','l','e','a','s','e'};
@@ -19,4 +12,11 @@ void passwordGate(){
 	receive_from_server(password);
 	printf(password);
 	send_to_server(password);
+}
+
+int main()
+{
+	init();
+	passwordGate();
+	return 0;
 }
