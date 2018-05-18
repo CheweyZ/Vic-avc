@@ -82,13 +82,13 @@ int driveWithShift(int directionShift) {
             lMSpd=maxMotorSpeed;
             rMSpd=maxMotorSpeed*(effectFactor*(1-effectNeeded));
             updateMotorSpeed();
-            printf("Left drift Lm:%d Rm:%d Ef:%f dS:%d\n",lMSpd,rMSpd,effectNeeded,directionShift);
+            // printf("Left drift Lm:%d Rm:%d Ef:%f dS:%d\n",lMSpd,rMSpd,effectNeeded,directionShift);
         }else if (directionShift>0){ //drifted right
             double effectNeeded=((double)directionShift)/boundarySum; // shows total shift and effect needed
             lMSpd=maxMotorSpeed*(effectFactor*(1-effectNeeded));
             rMSpd=maxMotorSpeed;
             updateMotorSpeed();
-            printf("Right drift Lm:%d Rm:%d Ef:%f dS:%d\n",lMSpd,rMSpd,effectNeeded,directionShift);
+            // printf("Right drift Lm:%d Rm:%d Ef:%f dS:%d\n",lMSpd,rMSpd,effectNeeded,directionShift);
         }
     } else { // if no shift
         lMSpd = maxMotorSpeed;
@@ -114,12 +114,12 @@ int cameraScanner(){
   }
   }
   int thr = (max+min)/2;
-  printf("min=%d max=%d threshold=%d\n", min, max,thr);
+  // printf("min=%d max=%d threshold=%d\n", min, max,thr);
   
   // int whi[320];  // white pixels
   int midLeftPoint=(CAMERA_WIDTH/2)-midCameraBlind;
   int midRightPoint=(CAMERA_WIDTH/2)+midCameraBlind;
-  printf("MidLeftPoint:%d MidRightPoint:%d\n", midLeftPoint,midRightPoint);
+  // printf("MidLeftPoint:%d MidRightPoint:%d\n", midLeftPoint,midRightPoint);
   int leftShift=0;
   int rightShift=0;
   for (int i = 0; i <320;i++){
@@ -135,7 +135,7 @@ int cameraScanner(){
     // whi[i] = 1;
   }
   }
-  printf("LShift:%d Rshift:%d\n", leftShift,rightShift);
+  // printf("LShift:%d Rshift:%d\n", leftShift,rightShift);
   
   if (abs(min-max)<blackWhiteTolerance){
     printf("Black and White range not big enough\n");
