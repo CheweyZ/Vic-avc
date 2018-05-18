@@ -1,12 +1,12 @@
 //===============================================================
-// lib calling
+// library calling
 //===============================================================
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include "E101.h"
 //===============================================================
-//	var initing
+//  initialising variables
 //===============================================================
 
 /* from section caller section */
@@ -25,63 +25,36 @@ int f = 0;
 int r = 1;
 int l = 2;
 
-// input pin numbers for motors to change on prop code
+// input pin numbers for motors
 int leftMotor = 1;
 int rightMotor = 2;
 
 int distFromWall = 600;
 int distFromSideWall = 100;
 int sleepAmount = 10000;
-int turning = 0; //(-ve(Left),0(Straight),+ve(Right))
+int mazeTurning = 0; //(-ve(Left),0(Straight),+ve(Right))
 
 /**/
 
-
-
 //===============================================================
-// main section caller method
+// FUNCTIONS
 //===============================================================
-int main()
-{
-	//set up
-	init();
+//===============================================================
+// gate 1 code
+//===============================================================
 
-	//repeating section
-	while(sectionNum <= 5 /*&& timeLimit < 0*/)
-	{
-		if (sectionNum == 1)
-		{ //before gate
-			/*call door*/
-			/*call follow line*/
-		}
-		else if (sectionNum == 2)
-		{ //follow line
-			/*call follow line*/
-			//sharpLineTest();
-		}
-		else if (sectionNum == 3)
-		{ //follow sharp line
-			//sharpLine();
-			/*call test for red line test*/
-		}
-		else if (sectionNum == 4)
-		{ //follow maze before gate
-			// call redTest(int scanning_row);
-			//mazeSection();
-		}
-		else if (sectionNum == 5)
-		{ //follow maze after gate
-			//mazeSection();
-		}
-		sleep1(0,sleepAmount);
-		//timeLimit == timeLimit - 1;
-	}
-	return 0;
+void passwordGate(){
+  char serverAddr[15]={'1','3','0','.','1','9','5','.','6','.','1','9','6'};
+  char message[24]={'P','l','e','a','s','e'};
+  char password[24];
+  connect_to_server(serverAddr, 1024);
+  send_to_server(message);
+  receive_from_server(password);
+  printf(password);
+  send_to_server(password);
+  sleep1(2,0);
+  sectionNum = 2;
 }
-//===============================================================
-// 
-//===============================================================
-
 
 //===============================================================
 // maze section code
@@ -120,60 +93,60 @@ void testTurn(){
   {
     if (scan_right > distFromSideWall) //there seems to be no wall there
     {
-      turning = 1;
+      mazeTurning = 1;
     } 
     else if (scan_left > distFromSideWall)
     {
-      turning = -1;
+      mazeTurning = -1;
     }
   }
-  //reallign if front(/back) is too close on one side if nec
-  if (scan_left > scan_right + mazeCentraliseThreshold && scan_right > noWallSenseThreshold && turning == 0)
+  //reallign if front is too close on one side
+  if (scan_left > scan_right + mazeCentraliseThreshold && scan_right > noWallSenseThreshold && mazeTurning == 0)
   { // realign right
-    turning = -2;
+    mazeTurning = -2;
   }
-  else if (scan_right > scan_right + mazeCentraliseThreshold && scan_right > noWallSenseThreshold && turning == 0)
+  else if (scan_right > scan_right + mazeCentraliseThreshold && scan_right > noWallSenseThreshold && mazeTurning == 0)
   { // realign left
-    turning = 2;
+    mazeTurning = 2;
   }
 }
 
 void mazeMove(){
   //turning/reallign function
-  if (turning == 1) //turning left
+  if (mazeTurning == 1) //turning left
   {
     turn(10,100);
     if (scan_front < distFromWall) //if large enough gap in front of robot
     {
-      turning == 0;
+      mazeTurning == 0;
     } 
   }
-  else if (turning == -1) //turning right
+  else if (mazeTurning == -1) //turning right
   {
     turn(100,10); 
     if (scan_front < distFromWall) //if large enough gap in front of robot
     {
-      turning == 0;
+      mazeTurning == 0;
     }
   }
-  else if (turning == 2) //realign left
+  else if (mazeTurning == 2) //realign left
   {
     turn(100,50);
     if (scan_right < distFromSideWall)
     { // if scan of each wall is roughly similar
-      turning == 0;
+      mazeTurning == 0;
     }
   }
-  else if (turning == -2) //realign right
+  else if (mazeTurning == -2) //realign right
   {
     turn(50,100);
     if (scan_left < distFromSideWall)
     {
-      turning == 0;
+      mazeTurning == 0;
     }
   }
   // going straight or updated to go straight
-  if (turning = 0)
+  if (mazeTurning = 0)
   {
     forward();
   }
@@ -188,5 +161,49 @@ void mazeSection()
 }
 
 //===============================================================
-// 
+// for another section
 //===============================================================
+
+//for another section
+
+
+
+//===============================================================
+// main section caller method
+//===============================================================
+int main()
+{
+  //set up
+  init();
+
+  //repeating section
+  while(sectionNum <= 5 /*&& timeLimit > 0*/)
+  {
+    if (sectionNum == 1)
+    { //before gate
+      passwordGate();
+    }
+    else if (sectionNum == 2)
+    { //follow line
+      /*call follow line*/
+      //sharpLineTest();
+    }
+    else if (sectionNum == 3)
+    { //follow sharp line
+      //sharpLine();
+      /*call test for red line test*/
+    }
+    else if (sectionNum == 4)
+    { //follow maze before gate
+      // call redTest(int scanning_row);
+      mazeSection();
+    }
+    else if (sectionNum == 5)
+    { //follow maze after gate
+      mazeSection();
+    }
+    sleep1(0,sleepAmount);
+    //timeLimit == timeLimit - 1; //use for testing with time to avoid infinite loops when testing
+  }
+  return 0;
+}
