@@ -17,7 +17,7 @@ int readRange=(CAMERA_WIDTH/2)-midCameraBlind;
 // Sum 1 to n  https://betterexplained.com/articles/techniques-for-adding-the-numbers-1-to-100/
 int boundarySum=(readRange*(readRange+1))/2;
 double effectFactor=1; //the factor that correction effect is 0-100% (0- to 1)
-int blackWhiteTolerance=50;
+int blackWhiteTolerance=30;
 int baseWhiteMin=110;
 
 int loopForceTimer=1000;
