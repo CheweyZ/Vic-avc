@@ -16,7 +16,7 @@ void passwordGate(){
 	char password[24];
 	connect_to_server(serverAddr, 1024);
 	send_to_server(message);
-	recieve_from_server(password);
+	receive_from_server(password);
 	printf(password);
-	int send_to_server(password);
+	send_to_server(password);
 }
