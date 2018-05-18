@@ -16,11 +16,12 @@ int rMSpd=maxMotorSpeed;
 int readRange=(CAMERA_WIDTH/2)-midCameraBlind;
 // Sum 1 to n  https://betterexplained.com/articles/techniques-for-adding-the-numbers-1-to-100/
 int boundarySum=(readRange*(readRange+1))/2;
+int leftShift=0;
+int rightShift=0;
+int whitePixSum=0; //used to confirm if tape was found
 double effectFactor=1; //the factor that correction effect is 0-100% (0- to 1)
-int blackWhiteTolerance=50;
-int baseWhiteMin=110;
 
-int loopForceTimer=1000;
+//FOR TESTING WITH PPM IMAGES: DELETE IN FINAL
 
 // returns color component (color==0 -red,color==1-green,color==2-blue
 // color == 3 - luminocity
@@ -62,15 +63,8 @@ int loopForceTimer=1000;
 // }
 
 int updateMotorSpeed(){
-  set_motor(1,rMSpd);
-  set_motor(2,lMSpd);
-  return 0;
-}
-
-int processExit(){
-  rMSpd=0;
-  lMSpd=0;
-  updateMotorSpeed();
+  set_motor(1,lMSpd);
+  set_motor(2,rMSpd);
   return 0;
 }
 
@@ -82,13 +76,13 @@ int driveWithShift(int directionShift) {
             lMSpd=maxMotorSpeed;
             rMSpd=maxMotorSpeed*(effectFactor*(1-effectNeeded));
             updateMotorSpeed();
-            printf("Left drift Lm:%d Rm:%d Ef:%f dS:%d\n",lMSpd,rMSpd,effectNeeded,directionShift);
+            printf("Left drift Lm:%d Rm:%d Ef:%f",lMSpd,rMSpd,effectNeeded);
         }else if (directionShift>0){ //drifted right
             double effectNeeded=((double)directionShift)/boundarySum; // shows total shift and effect needed
             lMSpd=maxMotorSpeed*(effectFactor*(1-effectNeeded));
             rMSpd=maxMotorSpeed;
             updateMotorSpeed();
-            printf("Right drift Lm:%d Rm:%d Ef:%f dS:%d\n",lMSpd,rMSpd,effectNeeded,directionShift);
+            printf("Right drift Lm:%d Rm:%d Ef:%f",lMSpd,rMSpd,effectNeeded);
         }
     } else { // if no shift
         lMSpd = maxMotorSpeed;
@@ -97,13 +91,12 @@ int driveWithShift(int directionShift) {
     return 0;
 }
 
-int cameraScanner(){
+int cameraScanner(int scanRow){
   int max = 0;
   int min =255;
-  int scan_row = 120;
   for (int i = 0; i <320;i++)
 {
-  int pix = get_pixel(scan_row,i,3);
+  int pix = get_pixel(scanRow,i,3);
       if ( pix > max) 
       {
     max = pix;
@@ -120,12 +113,11 @@ int cameraScanner(){
   int midLeftPoint=(CAMERA_WIDTH/2)-midCameraBlind;
   int midRightPoint=(CAMERA_WIDTH/2)+midCameraBlind;
   printf("MidLeftPoint:%d MidRightPoint:%d\n", midLeftPoint,midRightPoint);
-  int leftShift=0;
-  int rightShift=0;
   for (int i = 0; i <320;i++){
   // whi[i]= 0 ;
-  int pix = get_pixel(scan_row,i,3);
+  int pix = get_pixel(scanRow,i,3);
   if ( pix > thr){
+	whitePixSum++;
     if (i<midLeftPoint){
       leftShift+=midLeftPoint-i;
       // printf("LShift:%d Rshift:%d\n", leftShift,rightShift);
@@ -134,52 +126,24 @@ int cameraScanner(){
     }
     // whi[i] = 1;
   }
-  }
-  printf("LShift:%d Rshift:%d\n", leftShift,rightShift);
-  
-  if (abs(min-max)<blackWhiteTolerance){
-    printf("Black and White range not big enough\n");
-    if (min<baseWhiteMin){
-      printf("The world is darkness\n");
-    }else{
-      printf("Wow its bright here\n");
-    }
-  }
-  
-  // possible check on these is if called read a row a bit above then determine if foward is also option (maybe a function just to return if white strip)
-  if (leftShift==boundarySum&& rightShift>=boundarySum){ // at a 2 way intersection (should check if can go ahead so look a line up)
-    // As C cant return 2 values instead need to copy code (so effecent) with recalulation for a some row up to determin if
-    // can go foward or if its only a T
-    printf("I can turn both ways\n");
-  }else if (leftShift==boundarySum){
-    // left turn option
-    printf("I can turn left\n");
-  }else if (rightShift>=boundarySum){
-    // right turn option
-    printf("I can turn right\n");
-  }else if (rightShift==0&& leftShift==0){
-    printf("Lets check is there still a path here?\n");
-  }
   int directionShift=leftShift-rightShift;
   // negative is drifted left +is drifted to right
-  driveWithShift(directionShift);
   
 //   for (int i = 0; i <320;i++)
 // {
 //   printf("%d ",whi[i]);
 //   }
 //   printf("\n");
-  return 0;
+  driveWithShift(directionShift);
 }
 
 int main (){
   int x=0;
   init();
-  while (x<loopForceTimer) {
+  while (x<1000) {
     take_picture();
     cameraScanner();
     x++;
   }
-  processExit();
   return 0;
 }
