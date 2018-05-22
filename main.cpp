@@ -10,17 +10,19 @@
 #define CAMERA_HEIGHT 240 //Control Resolution from Camera
 // unsigned char pixels_buf[CAMERA_WIDTH*CAMERA_HEIGHT*4];
 int midCameraBlind=10;
-int maxMotorSpeed=50;
+int maxMotorSpeed=80;
+int reverseSpeed=80;
 int lMSpd=maxMotorSpeed;
 int rMSpd=maxMotorSpeed;
 int readRange=(CAMERA_WIDTH/2)-midCameraBlind;
 // Sum 1 to n  https://betterexplained.com/articles/techniques-for-adding-the-numbers-1-to-100/
 int boundarySum=(readRange*(readRange+1))/2;
+// int rightBoundarySum=((readRange-1)*(readRange))/2;
 double effectFactor=1; //the factor that correction effect is 0-100% (0- to 1)
 int blackWhiteTolerance=30;
 int baseWhiteMin=110;
 
-int loopForceTimer=1000;
+int loopForceTimer=30;
 
 // returns color component (color==0 -red,color==1-green,color==2-blue
 // color == 3 - luminocity
@@ -118,7 +120,7 @@ int cameraScanner(){
   
   // int whi[320];  // white pixels
   int midLeftPoint=(CAMERA_WIDTH/2)-midCameraBlind;
-  int midRightPoint=(CAMERA_WIDTH/2)+midCameraBlind;
+  int midRightPoint=(CAMERA_WIDTH/2)+midCameraBlind-1;
   // printf("MidLeftPoint:%d MidRightPoint:%d\n", midLeftPoint,midRightPoint);
   int leftShift=0;
   int rightShift=0;
@@ -137,24 +139,41 @@ int cameraScanner(){
   }
   // printf("LShift:%d Rshift:%d\n", leftShift,rightShift);
   
+  // printf("Min %d Max %d\n",min,max );
   if (abs(min-max)<blackWhiteTolerance){
     printf("Black and White range not big enough\n");
     if (min<baseWhiteMin){
       printf("The world is darkness\n");
+      rMSpd=-reverseSpeed;
+      lMSpd=-reverseSpeed;
+      updateMotorSpeed();
+      printf("Sleep Start\n");
+      sleep1(0,50000);
+      rMSpd=0;
+      lMSpd=0;
+      updateMotorSpeed();
+      sleep1(0,20000);
+      printf("Sleep End\n");
+      return 0;
     }else{
       printf("Wow its bright here\n");
     }
   }
   
+  // if (loopForceTimer%2==0){ //half the logs as drops connection
+    printf("Left:%d Right: %d Sum:%d\n", leftShift,rightShift,boundarySum);
+    // Left max = 11325  right max=11175 (right is less due to blind spot)
+  // }
+  
   // possible check on these is if called read a row a bit above then determine if foward is also option (maybe a function just to return if white strip)
-  if (leftShift==boundarySum&& rightShift>=boundarySum){ // at a 2 way intersection (should check if can go ahead so look a line up)
+  if (leftShift==boundarySum&& rightShift==boundarySum){ // at a 2 way intersection (should check if can go ahead so look a line up)
     // As C cant return 2 values instead need to copy code (so effecent) with recalulation for a some row up to determin if
     // can go foward or if its only a T
     printf("I can turn both ways\n");
   }else if (leftShift==boundarySum){
     // left turn option
     printf("I can turn left\n");
-  }else if (rightShift>=boundarySum){
+  }else if (rightShift==boundarySum){
     // right turn option
     printf("I can turn right\n");
   }else if (rightShift==0&& leftShift==0){
@@ -175,6 +194,11 @@ int cameraScanner(){
 int main (){
   int x=0;
   init();
+  // set_motor(1,100);
+  // sleep1(5,0);
+  // set_motor(1,-100);
+  // sleep1(5,0);
+  
   while (x<loopForceTimer) {
     take_picture();
     cameraScanner();
