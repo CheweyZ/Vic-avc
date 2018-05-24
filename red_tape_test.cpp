@@ -14,7 +14,6 @@ int updateMotorSpeed() {
 int f = 1;
 int scan_front = 100;
 int maxMotorSpeed = 0;
-int thr = 100;
 
 //CODE BEGINS
 
@@ -47,9 +46,8 @@ int redTest(int scaning_row) {
      int red_total = 0;
      for (int i = 0; i < 320;i++) { //check pixels along an entire line
         int pix = get_pixel(scaning_row,i,0); //check for red pixels
-			if (pix > thr) {
-				int red_total = red_total + pix; //add the output to red_total
-			}
+		int red_total = red_total + pix; //add the output to red_total
+			
      }
      printf("red_total = %2f", red_total);
      if( red_total > 1000) { //if significant enough red has been found
@@ -62,5 +60,6 @@ int redTest(int scaning_row) {
 int main() {
 	while (true) {
 		redTest(scan_front);
+		sleep(1000);
 	}
 }
