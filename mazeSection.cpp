@@ -39,8 +39,8 @@ int loopForceTimer = 100000;
 void mazeTurn(int lSpeed, int rSpeed){  //change to main codes turn
   printf("left: %d ... ", lSpeed);
   printf("right: %d\n", rSpeed);
-  //set_motor(rightMotor,lSpeed);
-  //set_motor(leftMotor,rSpeed);
+  set_motor(rightMotor,lSpeed);
+  set_motor(leftMotor,rSpeed);
 }
 
 void mazeForward(){ //goes straight
@@ -49,8 +49,8 @@ void mazeForward(){ //goes straight
 
 void turnOnSpot(int speed){
   printf("%d\n", speed);
-  //set_motor(leftMotor,speed);
-  //set_motor(rightMotor,(-1)*speed);
+  set_motor(leftMotor,speed);
+  set_motor(rightMotor,(-1)*speed);
 }
 
 
