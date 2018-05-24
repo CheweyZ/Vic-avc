@@ -106,7 +106,7 @@ void mazeMove(){
   }
   else if (mazeTurning == -1) //Turning right
   {
-  	mazeTurn(-10,-10);
+  	mazeTurn(-50,-50);
   	sleep1(1,0);
     mazeTurn(50,0); 
     if (scan_front < thresholdFront) //if large enough gap in front of robot
@@ -170,6 +170,6 @@ int main (){
     x++;
   }
   mazeTurn(0,0); 
-
+  printf("finished!\n");
 return 0;
 }
