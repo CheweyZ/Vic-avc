@@ -57,7 +57,7 @@ int redTest(int scaning_row) {
      if( red_total > 1000) { //if significant enough red has been found
          stage = stage + 1; //increment redTape
          redStage(stage); //call red
-         printf("HORRAYYYAYYAYAYA");
+         printf("HORRAYYYAYYAYAYA \n");
      }
      return stage;
  }
