@@ -26,7 +26,7 @@ int mazeCentraliseThresholdLeft = 200;
 int noWallSenseThresholdLeft = 120;
 int noWallSenseThresholdRight = 120;
 
-
+int firstTime = 0;
 int mazeTurning = 0; //(-ve(Left),0(Straight),+ve(Right))
 
 int sleepAmount = 10000;
@@ -69,10 +69,12 @@ void testTurn(){
     if (scan_right > thresholdRight ) //there seems to be no wall there
     {
       mazeTurning = 1;
+      firstTime = 1;
     } 
     else if (scan_left > thresholdLeft )
     {
       mazeTurning = -1;
+      firstTime = 1;
     }
     else
     {
@@ -96,9 +98,13 @@ void mazeMove(){
 
   if (mazeTurning == 1) //Turning left
   {
-  	mazeTurn(-50,-50);
-  	sleep1(1,0);
-    mazeTurn(0,50);
+  	if (firstTime == 1)
+  	{
+	  	mazeTurn(-50,-50);
+	  	sleep1(1,0);
+	  	firstTime = 0;
+  	}
+  	mazeTurn(0,50);
     if (scan_front < thresholdFront) //if large enough gap in front of robot
     {
       mazeTurning == 0;
@@ -106,8 +112,13 @@ void mazeMove(){
   }
   else if (mazeTurning == -1) //Turning right
   {
-  	mazeTurn(-50,-50);
-  	sleep1(1,0);
+  	if (firstTime == 1)
+  	{
+	  	mazeTurn(-50,-50);
+	  	sleep1(1,0);
+	  	firstTime = 0;
+  	}
+
     mazeTurn(50,0); 
     if (scan_front < thresholdFront) //if large enough gap in front of robot
     {
