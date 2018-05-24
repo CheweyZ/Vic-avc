@@ -18,7 +18,7 @@ int leftMotor = 1;
 int rightMotor = 2;
 
 // thresholds for going through wall
-int thresholdFront = 500; // always gives high values
+int thresholdFront = 550; // always gives high values
 int thresholdRight = 120; // most sens
 int thresholdLeft = 120;
 int mazeCentraliseThresholdRight = 200; // as left and right have different sens
@@ -82,11 +82,11 @@ void testTurn(){
   //reallign if front is too close on one side if nec
   if (scan_left > scan_right + mazeCentraliseThresholdRight && scan_right > noWallSenseThresholdRight && mazeTurning == 0)
   { // realign right
-    mazeTurning = -2;
+    mazeTurning = 2;
   }
   else if (scan_right > scan_left + mazeCentraliseThresholdLeft && scan_left > noWallSenseThresholdLeft && mazeTurning == 0)
   { // realign left
-    mazeTurning = 2;
+    mazeTurning = -2;
   }
 
 }
@@ -95,7 +95,7 @@ void mazeMove(){
   //Turning/reallign function
   if (mazeTurning == 1) //Turning left
   {
-    mazeTurn(-10,40);
+    mazeTurn(0,50);
     if (scan_front < thresholdFront) //if large enough gap in front of robot
     {
       mazeTurning == 0;
@@ -103,7 +103,7 @@ void mazeMove(){
   }
   else if (mazeTurning == -1) //Turning right
   {
-    mazeTurn(40,-10); 
+    mazeTurn(50,0); 
     if (scan_front < thresholdFront) //if large enough gap in front of robot
     {
       mazeTurning == 0;
@@ -112,7 +112,7 @@ void mazeMove(){
   else if (mazeTurning == 2) //realign left
   {
     mazeTurn(50,40);
-    if (scan_left < thresholdLeft)
+    if (scan_left > thresholdLeft)
     { // if scan of each wall is roughly similar
       mazeTurning == 0;
     }
@@ -120,7 +120,7 @@ void mazeMove(){
   else if (mazeTurning == -2) //realign right
   {
     mazeTurn(40,50);
-    if (scan_right < thresholdRight)
+    if (scan_right > thresholdRight)
     {
       mazeTurning == 0;
     }
