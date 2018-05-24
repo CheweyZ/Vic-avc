@@ -30,7 +30,7 @@ int firstTime = 0;
 int mazeTurning = 0; //(-ve(Left),0(Straight),+ve(Right))
 
 int sleepAmount = 10000;
-int loopForceTimer = 200;
+int loopForceTimer = 100;
 
 //////////////////////////////////
 //functions						//
@@ -105,7 +105,7 @@ void mazeMove(){
 	  	firstTime = 0;
   	}
   	mazeTurn(50,0);
-    if (scan_front < thresholdFront) //if large enough gap in front of robot
+    if (scan_front < 400) //if large enough gap in front of robot
     {
       mazeTurning == 0;
     } 
@@ -120,7 +120,7 @@ void mazeMove(){
   	}
 
     mazeTurn(0,50); 
-    if (scan_front < thresholdFront) //if large enough gap in front of robot
+    if (scan_front < 400) //if large enough gap in front of robot
     {
       mazeTurning == 0;
     }
