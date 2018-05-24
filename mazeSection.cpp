@@ -30,7 +30,7 @@ int firstTime = 0;
 int mazeTurning = 0; //(-ve(Left),0(Straight),+ve(Right))
 
 int sleepAmount = 10000;
-int loopForceTimer = 100;
+int loopForceTimer = 200;
 
 //////////////////////////////////
 //functions						//
@@ -131,6 +131,7 @@ void mazeMove(){
     if (scan_left > thresholdLeft)
     { // if scan of each wall is roughly similar
       mazeTurning == 0;
+      firstTime = 1;
     }
   }
   else if (mazeTurning == -2) //realign right
@@ -139,6 +140,7 @@ void mazeMove(){
     if (scan_right > thresholdRight)
     {
       mazeTurning == 0;
+      firstTime = 1;
     }
   }
   else if (mazeTurning == 10)
@@ -155,6 +157,7 @@ void mazeMove(){
   if (mazeTurning == 0)
   {
     mazeForward();
+    firstTime = 1;
   }
 
 }
