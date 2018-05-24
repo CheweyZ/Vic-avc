@@ -97,6 +97,7 @@ void mazeMove(){
   {
 	mazeTurn(-50,-50);
 	sleep1(1,0);
+	mazeTurn(0,0);
   }
 
 
