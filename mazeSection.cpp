@@ -64,7 +64,7 @@ void scanValueUpdate()
 
 void testTurn(){
   // Tests sensing for wall infront
-  if (scan_front > thresholdFront ) //if robot is too close to the wall
+  if (scan_front > 400 ) //if robot is too close to the wall
   {
     if (scan_right > thresholdRight ) //there seems to be no wall there
     {
@@ -80,6 +80,11 @@ void testTurn(){
     {
       mazeTurning = 10;
     }
+  }
+  if (scan_front > 500)
+  {
+  	mazeTurn(-40,-50);
+	sleep1(1,0);
   }
   //reallign if front is too close on one side if nec
   if (scan_left < 200 /*scan_right + mazeCentraliseThresholdRight && scan_right > noWallSenseThresholdRight*/ && mazeTurning%2 == 0)
