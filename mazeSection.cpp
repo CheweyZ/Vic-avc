@@ -23,8 +23,8 @@ int thresholdRight = 120; // most sens
 int thresholdLeft = 120;
 int mazeCentraliseThresholdRight = 200; // as left and right have different sens
 int mazeCentraliseThresholdLeft = 200;
-int noWallSenseThresholdLeft = 120;
-int noWallSenseThresholdRight = 120;
+int noWallSenseThresholdLeft = 60;
+int noWallSenseThresholdRight = 60;
 
 
 int mazeTurning = 0; //(-ve(Left),0(Straight),+ve(Right))
@@ -109,7 +109,7 @@ void mazeMove(){
       mazeTurning == 0;
     }
   }
-  else if (mazeTurning == 2) //realign left
+  else if (mazeTurning == -2) //realign left
   {
     mazeTurn(50,40);
     if (scan_front < thresholdFront)
@@ -117,7 +117,7 @@ void mazeMove(){
       mazeTurning == 0;
     }
   }
-  else if (mazeTurning == -2) //realign right
+  else if (mazeTurning == 2) //realign right
   {
     mazeTurn(40,50);
     if (scan_front < thresholdFront)
