@@ -54,9 +54,10 @@ int redTest(int scaning_row) {
 		}
      }
      printf("red_total = %d \n", red_total);
-     if( red_total > 6000) { //if significant enough red has been found
+     if( red_total > 4000) { //if significant enough red has been found
          stage = stage + 1; //increment redTape
          redStage(stage); //call red
+
      }
      return stage;
  }
@@ -67,7 +68,6 @@ int main() {
 	while (x < 100) {
 		take_picture();
 		redTest(scan_front);
-		sleep1(1,0);
 		x= x +1;
 	}
 }
