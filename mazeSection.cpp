@@ -84,6 +84,7 @@ void testTurn(){
   if (scan_front > 500) {
   	mazeTurn(-50,-50);
 	sleep1(0,100000);
+	printf("backing back");
   }
 
   //reallign if front is too close on one side if nec
