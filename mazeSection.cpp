@@ -104,7 +104,7 @@ void mazeMove(){
 	  	sleep1(0,100000);
 	  	firstTime = 0;
   	}
-  	mazeTurn(0,50);
+  	mazeTurn(50,0);
     if (scan_front < thresholdFront) //if large enough gap in front of robot
     {
       mazeTurning == 0;
@@ -119,7 +119,7 @@ void mazeMove(){
 	  	firstTime = 0;
   	}
 
-    mazeTurn(50,0); 
+    mazeTurn(0,50); 
     if (scan_front < thresholdFront) //if large enough gap in front of robot
     {
       mazeTurning == 0;
