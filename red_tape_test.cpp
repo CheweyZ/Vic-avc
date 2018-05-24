@@ -1,5 +1,4 @@
 //Still does not allow for a rest period, so that it does not detect the same piece of red tape to infact be multiple
-//Also needs color tests to include lack of green/blue otherwise could trigger on white
 
 // DELETE ALL BELOW DECLARATIONS, ONLY FOR COMPILATION
 #include <stdio.h>
