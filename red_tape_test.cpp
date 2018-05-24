@@ -50,7 +50,6 @@ int redTest(int scaning_row) {
         int green = get_pixel(scaning_row,i,1); //check for green
         int blue = get_pixel(scaning_row,i,2); //check for blue
         if ((red > 200) && (green < 100) && (blue < 100)){
-			printf("pix = %d", red);
 			red_total = red_total + red; //add the output to red_total
 		}
      }
@@ -58,6 +57,7 @@ int redTest(int scaning_row) {
      if( red_total > 1000) { //if significant enough red has been found
          stage = stage + 1; //increment redTape
          redStage(stage); //call red
+         printf("HORRAYYYAYYAYAYA");
      }
      return stage;
  }
