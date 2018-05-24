@@ -17,16 +17,6 @@ int r = 2;
 int leftMotor = 1;
 int rightMotor = 2;
 
-// thresholds for going through wall
-int thresholdFront = 500; // always gives high values
-int thresholdRight = 60; // most sens
-int thresholdLeft = 60;
-int mazeCentraliseThresholdRight = 200; // as left and right have different sens
-int mazeCentraliseThresholdLeft = 200;
-int noWallSenseThresholdLeft = 120;
-int noWallSenseThresholdRight = 120;
-
-int firstTime = 0;
 int mazeTurning = 0; //(-ve(Left),0(Straight),+ve(Right))
 
 int sleepAmount = 10000;
@@ -47,11 +37,13 @@ void mazeForward(){ //goes straight
   mazeTurn(50,50);
 }
 
+/*
 void turnOnSpot(int speed){
   printf("%d\n", speed);
   set_motor(leftMotor,speed);
   set_motor(rightMotor,(-1)*speed);
 }
+*/
 
 
 void scanValueUpdate()
@@ -66,15 +58,13 @@ void testTurn(){
   // Tests sensing for wall infront
   if (scan_front > 400 ) //if robot is too close to the wall
   {
-    if (scan_right > thresholdRight ) //there seems to be no wall there
+    if (scan_right > 300 ) //there seems to be no wall there
     {
       mazeTurning = 1;
-      firstTime = 1;
     } 
-    else if (scan_left > thresholdLeft )
+    else if (scan_left > 300 )
     {
       mazeTurning = -1;
-      firstTime = 1;
     }
     else
     {
@@ -86,12 +76,19 @@ void testTurn(){
   	mazeTurn(-40,-50);
 	sleep1(1,0);
   }
+
+  if (scan_front > 550) {
+  	mazeTurn(-50,-50);
+	sleep1(0,100000);
+	printf("backing back");
+  }
+
   //reallign if front is too close on one side if nec
-  if (scan_left < 200 && mazeTurning%2 == 0)
+  if (scan_left > 550 && mazeTurning%2 == 0)
   { // realign right
     mazeTurning = 2;
   }
-  else if (scan_right < 200 && mazeTurning%2 == 0)
+  else if (scan_right > 550 && mazeTurning%2 == 0)
   { // realign left
     mazeTurning = -2;
   }
@@ -103,12 +100,6 @@ void mazeMove(){
 
   if (mazeTurning == 1) //Turning right
   {
-  	if (firstTime == 1)
-  	{
-	  	mazeTurn(-40,-50);
-	  	sleep1(0,500000);
-	  	firstTime = 0;
-  	}
   	mazeTurn(50,0);
     if (scan_front < 400) //if large enough gap in front of robot
     {
@@ -117,13 +108,6 @@ void mazeMove(){
   }
   else if (mazeTurning == -1) //Turning left
   {
-  	if (firstTime == 1)
-  	{
-	  	mazeTurn(-50,-40);
-	  	sleep1(0,500000);
-	  	firstTime = 0;
-  	}
-
     mazeTurn(0,50); 
     if (scan_front < 400) //if large enough gap in front of robot
     {
@@ -133,24 +117,22 @@ void mazeMove(){
   else if (mazeTurning == 2) //realign right
   {
     mazeTurn(50,40);
-    if (scan_left > thresholdLeft)
+    if (scan_left < 500)
     { // if scan of each wall is roughly similar
       mazeTurning == 0;
-      firstTime = 1;
     }
   }
   else if (mazeTurning == -2) //realign left
   {
     mazeTurn(40,50);
-    if (scan_right > thresholdRight)
+    if (scan_right < 500)
     {
       mazeTurning == 0;
-      firstTime = 1;
     }
   }
   else if (mazeTurning == 10)
   { // going backwards but shouldnt be needed to be called
-  	mazeTurn(-50,-20);
+  	mazeTurn(-50,-40);
   	if (scan_front < thresholdFront)
   	{
   	  mazeTurning == 0;
@@ -162,7 +144,6 @@ void mazeMove(){
   if (mazeTurning == 0)
   {
     mazeForward();
-    firstTime = 1;
   }
 
 }
