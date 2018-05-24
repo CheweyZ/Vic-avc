@@ -18,13 +18,13 @@ int leftMotor = 1;
 int rightMotor = 2;
 
 // thresholds for going through wall
-int thresholdFront = 600; // always gives high values
-int thresholdRight = 400; // most sens
-int thresholdLeft = 500;
-int mazeCentraliseThresholdRight = 5; // as left and right have different sens
-int mazeCentraliseThresholdLeft = 5;
-int noWallSenseThresholdLeft = 5;
-int noWallSenseThresholdRight = 5;
+int thresholdFront = 550; // always gives high values
+int thresholdRight = 120; // most sens
+int thresholdLeft = 120;
+int mazeCentraliseThresholdRight = 200; // as left and right have different sens
+int mazeCentraliseThresholdLeft = 200;
+int noWallSenseThresholdLeft = 120;
+int noWallSenseThresholdRight = 120;
 
 
 int mazeTurning = 0; //(-ve(Left),0(Straight),+ve(Right))
@@ -44,7 +44,7 @@ void mazeTurn(int lSpeed, int rSpeed){  //change to main codes turn
 }
 
 void mazeForward(){ //goes straight
-  mazeTurn(100,100);
+  mazeTurn(50,50);
 }
 
 void turnOnSpot(int speed){
@@ -95,7 +95,7 @@ void mazeMove(){
   //Turning/reallign function
   if (mazeTurning == 1) //Turning left
   {
-    mazeTurn(10,100);
+    mazeTurn(0,50);
     if (scan_front < thresholdFront) //if large enough gap in front of robot
     {
       mazeTurning == 0;
@@ -103,7 +103,7 @@ void mazeMove(){
   }
   else if (mazeTurning == -1) //Turning right
   {
-    mazeTurn(100,10); 
+    mazeTurn(50,0); 
     if (scan_front < thresholdFront) //if large enough gap in front of robot
     {
       mazeTurning == 0;
@@ -111,23 +111,23 @@ void mazeMove(){
   }
   else if (mazeTurning == 2) //realign left
   {
-    mazeTurn(100,50);
-    if (scan_right < thresholdRight)
+    mazeTurn(50,40);
+    if (scan_front < thresholdFront)
     { // if scan of each wall is roughly similar
       mazeTurning == 0;
     }
   }
   else if (mazeTurning == -2) //realign right
   {
-    mazeTurn(50,100);
-    if (scan_left < thresholdLeft)
+    mazeTurn(40,50);
+    if (scan_front < thresholdFront)
     {
       mazeTurning == 0;
     }
   }
   else if (mazeTurning == 10)
   { // going backwards but shouldnt be needed to be called
-  	mazeTurn(-100,-50);
+  	mazeTurn(-50,-20);
   	if (scan_front < thresholdFront)
   	{
   	  mazeTurning == 0;
