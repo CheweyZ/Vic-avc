@@ -48,7 +48,7 @@ int redTest(int scaning_row) {
      for (int i = 0; i < 320;i++) { //check pixels along an entire line
         int pix = get_pixel(scaning_row,i,0); //check for red pixels
         printf("pix = %d", pix);
-		int red_total = red_total + pix; //add the output to red_total
+		red_total = red_total + pix; //add the output to red_total
 			
      }
      printf("red_total = %d", red_total);
@@ -64,7 +64,6 @@ int main() {
 	int x = 0;
 	while (x < 10) {
 		redTest(scan_front);
-		sleep1(0,10000);
 		x = x +1;
 	}
 }
