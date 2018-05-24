@@ -18,7 +18,7 @@ int leftMotor = 1;
 int rightMotor = 2;
 
 // thresholds for going through wall
-int thresholdFront = 550; // always gives high values
+int thresholdFront = 450; // always gives high values
 int thresholdRight = 60; // most sens
 int thresholdLeft = 60;
 int mazeCentraliseThresholdRight = 200; // as left and right have different sens
@@ -93,6 +93,13 @@ void testTurn(){
 
 void mazeMove(){
   //Turning/reallign function
+  if (mazeTurning%2 != 0)
+  {
+	mazeTurn(-50,-50);
+	sleep1(1,0);
+  }
+
+
   if (mazeTurning == 1) //Turning left
   {
     mazeTurn(0,50);
