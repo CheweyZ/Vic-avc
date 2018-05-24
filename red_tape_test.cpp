@@ -1,4 +1,5 @@
 //Still does not allow for a rest period, so that it does not detect the same piece of red tape to infact be multiple
+//Also needs color tests to include lack of green/blue otherwise could trigger on white
 
 // DELETE ALL BELOW DECLARATIONS, ONLY FOR COMPILATION
 #include <stdio.h>
@@ -13,6 +14,7 @@ int updateMotorSpeed() {
 int f = 1;
 int scan_front = 100;
 int maxMotorSpeed = 0;
+int thr = 100;
 
 //CODE BEGINS
 
@@ -45,11 +47,20 @@ int redTest(int scaning_row) {
      int red_total = 0;
      for (int i = 0; i < 320;i++) { //check pixels along an entire line
         int pix = get_pixel(scaning_row,i,0); //check for red pixels
-        int red_total = red_total + pix; //add the output to red_total
+			if (pix > thr) {
+				int red_total = red_total + pix; //add the output to red_total
+			}
      }
+     printf("red_total = %2f", red_total);
      if( red_total > 1000) { //if significant enough red has been found
          stage = stage + 1; //increment redTape
          redStage(stage); //call red
      }
      return stage;
  }
+
+int main() {
+	while (true) {
+		redTest(scan_front);
+	}
+}
