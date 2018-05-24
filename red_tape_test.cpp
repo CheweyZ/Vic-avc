@@ -46,10 +46,13 @@ int redStage(int stage) { //responds to red tape events
 int redTest(int scaning_row) {
      int red_total = 0;
      for (int i = 0; i < 320;i++) { //check pixels along an entire line
-        int pix = get_pixel(scaning_row,i,0); //check for red pixels
-        printf("pix = %d", pix);
-		red_total = red_total + pix; //add the output to red_total
-			
+        int red = get_pixel(scaning_row,i,0); //check for red
+        int green = get_pixel(scaning_row,i,1); //check for green
+        int blue = get_pixel(scaning_row,i,2); //check for blue
+        if ((red > 200) && (green < 100) && (blue < 100)){
+			printf("pix = %d", red);
+			red_total = red_total + red; //add the output to red_total
+		}
      }
      printf("red_total = %d", red_total);
      if( red_total > 1000) { //if significant enough red has been found
@@ -63,6 +66,7 @@ int main() {
 	init();
 	int x = 0;
 	while (x < 10) {
+		take_picture();
 		redTest(scan_front);
 		x = x +1;
 	}
