@@ -100,8 +100,8 @@ void mazeMove(){
   {
   	if (firstTime == 1)
   	{
-	  	mazeTurn(-50,-50);
-	  	sleep1(1,0);
+	  	mazeTurn(-40,-50);
+	  	sleep1(0,100000);
 	  	firstTime = 0;
   	}
   	mazeTurn(0,50);
@@ -114,7 +114,7 @@ void mazeMove(){
   {
   	if (firstTime == 1)
   	{
-	  	mazeTurn(-50,-50);
+	  	mazeTurn(-50,-40);
 	  	sleep1(1,0);
 	  	firstTime = 0;
   	}
