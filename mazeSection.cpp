@@ -82,11 +82,11 @@ void testTurn(){
   //reallign if front is too close on one side if nec
   if (scan_left > scan_right + mazeCentraliseThresholdRight && scan_right > noWallSenseThresholdRight && mazeTurning == 0)
   { // realign right
-    mazeTurning = -2;
+    mazeTurning = 2;
   }
   else if (scan_right > scan_left + mazeCentraliseThresholdLeft && scan_left > noWallSenseThresholdLeft && mazeTurning == 0)
   { // realign left
-    mazeTurning = 2;
+    mazeTurning = -2;
   }
 
 }
