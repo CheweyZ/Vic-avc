@@ -67,6 +67,7 @@ int main() {
 	while (x < 100) {
 		take_picture();
 		redTest(scan_front);
+		sleep1(1,0);
 		x= x +1;
 	}
 }
