@@ -164,6 +164,7 @@ int main (){
 
     x++;
   }
-  mazeTurn(50,50); 
+  mazeTurn(0,0); 
+
 return 0;
 }
