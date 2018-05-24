@@ -93,16 +93,11 @@ void testTurn(){
 
 void mazeMove(){
   //Turning/reallign function
-  if (mazeTurning%2 != 0)
-  {
-	mazeTurn(-50,-50);
-	sleep1(0,10000);
-	mazeTurn(0,0);
-  }
-
 
   if (mazeTurning == 1) //Turning left
   {
+  	mazeTurn(-10,-10);
+  	sleep1(1,0);
     mazeTurn(0,50);
     if (scan_front < thresholdFront) //if large enough gap in front of robot
     {
@@ -111,6 +106,8 @@ void mazeMove(){
   }
   else if (mazeTurning == -1) //Turning right
   {
+  	mazeTurn(-10,-10);
+  	sleep1(1,0);
     mazeTurn(50,0); 
     if (scan_front < thresholdFront) //if large enough gap in front of robot
     {
