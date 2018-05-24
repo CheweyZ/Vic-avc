@@ -32,9 +32,9 @@ int mazeTurning = 0; //(-ve(Left),0(Straight),+ve(Right))
 int sleepAmount = 10000;
 int loopForceTimer = 100000;
 
-/////////////////////////////////
-//functions
-////////////////////////////////
+//////////////////////////////////
+//functions						//
+//////////////////////////////////
 
 void mazeTurn(int lSpeed, int rSpeed){  //change to main codes turn
   printf("left: %d ... ", lSpeed);
@@ -156,14 +156,7 @@ void mazeSection()
 ////////////////////////
 int main (){
   init();
-  //for (int i = 0; i < 10; ++i)
-  //{
-  //  for (int j = 0; j < 10; ++j)
-  //  {
-  //  int x=0;
-  //mazeSection();
-  //  }
-  //}
+  
   while (x<loopForceTimer) {
     mazeSection();
 
