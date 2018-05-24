@@ -156,7 +156,7 @@ void mazeSection()
 ////////////////////////
 int main (){
   init();
-  
+  int x = 0;
   while (x<loopForceTimer) {
     mazeSection();
 
