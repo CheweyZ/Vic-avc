@@ -30,7 +30,7 @@ int noWallSenseThresholdRight = 5;
 int mazeTurning = 0; //(-ve(Left),0(Straight),+ve(Right))
 
 int sleepAmount = 10000;
-int loopForceTimer = 100000;
+int loopForceTimer = 100;
 
 //////////////////////////////////
 //functions						//
