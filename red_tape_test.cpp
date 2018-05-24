@@ -61,8 +61,11 @@ int redTest(int scaning_row) {
  }
 
 int main() {
-	while (true) {
+	init();
+	int x = 0;
+	while (x < 100) {
 		redTest(scan_front);
 		sleep1(0,10000);
+		x = x +1;
 	}
 }
