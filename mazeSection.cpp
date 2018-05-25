@@ -129,7 +129,7 @@ void mazeMove(){
   else if (mazeTurning == 10)
   { // going backwards but shouldnt be needed to be called
   	mazeTurn(-50,-40);
-  	if (scan_front < thresholdFront)
+  	if (scan_front < 400)
   	{
   	  mazeTurning == 0;
   	}
