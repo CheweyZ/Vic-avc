@@ -56,7 +56,7 @@ void scanValueUpdate()
 
 void testTurn(){
   // Tests sensing for wall infront
-  if (scan_front > 450 ) //if robot is too close to the front
+  if (scan_front > 440 ) //if robot is too close to the front
   {
     if (scan_right < 300 ) //there seems to be no wall: r
     {
@@ -72,10 +72,10 @@ void testTurn(){
     }
   }
 
-  if (scan_front > 480) //when robot is way too close to wall
+  if (scan_front > 490) //when robot is way too close to wall
   {
 	mazeTurn(-50,-50);
-	sleep1(0,250000);
+	sleep1(0,350000);
 	printf("backing back");
   }
 
@@ -96,7 +96,7 @@ void mazeMove(){
 
   if (mazeTurning == 1) //Turning right
   {
-  	mazeTurn(50,-30);
+  	mazeTurn(50,-50);
     if (scan_front < 400) //if large enough gap in front of robot
     {
       mazeTurning = 0;
@@ -104,7 +104,7 @@ void mazeMove(){
   }
   else if (mazeTurning == -1) //Turning left
   {
-    mazeTurn(-30,50); 
+    mazeTurn(-50,50); 
     if (scan_front < 400) //if large enough gap in front of robot
     {
       mazeTurning = 0;
