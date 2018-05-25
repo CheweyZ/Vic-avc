@@ -22,7 +22,7 @@ double effectFactor=1; //the factor that correction effect is 0-100% (0- to 1)
 int blackWhiteTolerance=30;
 int baseWhiteMin=110;
 
-int loopForceTimer=30;
+int loopForceTimer=100;
 
 // returns color component (color==0 -red,color==1-green,color==2-blue
 // color == 3 - luminocity
@@ -76,6 +76,36 @@ int processExit(){
   return 0;
 }
 
+void reverse(int amt){
+  rMSpd=-amt+50;
+  lMSpd=-amt;
+  updateMotorSpeed();
+  printf("Sleep Start\n");
+  sleep1(0,500000);
+  rMSpd=0;
+  lMSpd=0;
+  updateMotorSpeed();
+  sleep1(0,500000);
+  printf("Sleep End\n");
+}
+
+void turnLeft(int speed){
+  int rSpd=rMSpd;
+  int lSpd=lMSpd;
+  rMSpd=speed;
+  lMSpd=0;
+  updateMotorSpeed();
+  printf("Sleep Start\n");
+  sleep1(0,800000);
+  rMSpd=0;
+  lMSpd=0;
+  updateMotorSpeed();
+  sleep1(0,20000);
+  rMSpd=rSpd;
+  lMSpd=lSpd;
+  printf("Sleep End\n");
+}
+
 int driveWithShift(int directionShift) {
     if (directionShift!=0){
         if (directionShift<0){ //drifted left
@@ -103,6 +133,7 @@ int cameraScanner(){
   int max = 0;
   int min =255;
   int scan_row = 120;
+  int secondScanRow=80;
   for (int i = 0; i <320;i++)
 {
   int pix = get_pixel(scan_row,i,3);
@@ -115,6 +146,20 @@ int cameraScanner(){
     min =pix;
   }
   }
+  
+//   for (int i = 0; i <320;i++)
+// {
+//   int pix = get_pixel(secondScanRow,i,3);
+//       if ( pix > max) 
+//       {
+//     max = pix;
+//   }
+//   if (pix < min)
+//   {
+//     min =pix;
+//   }
+//   }
+  
   int thr = (max+min)/2;
   // printf("min=%d max=%d threshold=%d\n", min, max,thr);
   
@@ -144,16 +189,7 @@ int cameraScanner(){
     printf("Black and White range not big enough\n");
     if (min<baseWhiteMin){
       printf("The world is darkness\n");
-      rMSpd=-reverseSpeed;
-      lMSpd=-reverseSpeed;
-      updateMotorSpeed();
-      printf("Sleep Start\n");
-      sleep1(0,50000);
-      rMSpd=0;
-      lMSpd=0;
-      updateMotorSpeed();
-      sleep1(0,20000);
-      printf("Sleep End\n");
+      reverse(reverseSpeed);
       return 0;
     }else{
       printf("Wow its bright here\n");
@@ -161,7 +197,7 @@ int cameraScanner(){
   }
   
   // if (loopForceTimer%2==0){ //half the logs as drops connection
-    printf("Left:%d Right: %d Sum:%d\n", leftShift,rightShift,boundarySum);
+    // printf("Left:%d Right: %d Sum:%d\n", leftShift,rightShift,boundarySum);
     // Left max = 11325  right max=11175 (right is less due to blind spot)
   // }
   
@@ -170,6 +206,7 @@ int cameraScanner(){
     // As C cant return 2 values instead need to copy code (so effecent) with recalulation for a some row up to determin if
     // can go foward or if its only a T
     printf("I can turn both ways\n");
+    turnLeft(80);// at a T we always turn right
   }else if (leftShift==boundarySum){
     // left turn option
     printf("I can turn left\n");
@@ -178,6 +215,7 @@ int cameraScanner(){
     printf("I can turn right\n");
   }else if (rightShift==0&& leftShift==0){
     printf("Lets check is there still a path here?\n");
+    reverse(reverseSpeed);
   }
   int directionShift=leftShift-rightShift;
   // negative is drifted left +is drifted to right
