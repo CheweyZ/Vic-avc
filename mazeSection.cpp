@@ -99,7 +99,7 @@ void mazeMove(){
   	mazeTurn(50,0);
     if (scan_front < 400) //if large enough gap in front of robot
     {
-      mazeTurning == 0;
+      mazeTurning = 0;
     } 
   }
   else if (mazeTurning == -1) //Turning left
@@ -107,7 +107,7 @@ void mazeMove(){
     mazeTurn(0,50); 
     if (scan_front < 400) //if large enough gap in front of robot
     {
-      mazeTurning == 0;
+      mazeTurning = 0;
     }
   }
   else if (mazeTurning == 2) //realign right
@@ -116,7 +116,7 @@ void mazeMove(){
     printf("trigger1\n");
     if (scan_left < 400)//scan_left > 400 && mazeTurning%2 == 0
     { // if scan of each wall is roughly similar
-      mazeTurning == 0;
+      mazeTurning = 0;
       printf("trigger2\n");
     }
   }
@@ -126,7 +126,7 @@ void mazeMove(){
     printf("trigger1\n");
     if (scan_right < 400)
     {
-      mazeTurning == 0;
+      mazeTurning = 0;
       printf("trigger2\n");
 
     }
@@ -136,7 +136,7 @@ void mazeMove(){
   	mazeTurn(-50,-40);
   	if (scan_front < 400)
   	{
-  	  mazeTurning == 0;
+  	  mazeTurning = 0;
   	}
 
   }
