@@ -20,7 +20,7 @@ int rightMotor = 2;
 int mazeTurning = 0; //(-ve(Left),0(Straight),+ve(Right))
 
 int sleepAmount = 10000;
-int loopForceTimer = 100;
+int loopForceTimer = 1000;
 
 //////////////////////////////////
 //functions						//
@@ -72,7 +72,7 @@ void testTurn(){
     }
   }
 
-  if (scan_front > 520) //when robot is way too close to wall
+  if (scan_front > 500) //when robot is way too close to wall
   {
 	mazeTurn(-50,-50);
 	sleep1(0,250000);
@@ -96,7 +96,7 @@ void mazeMove(){
 
   if (mazeTurning == 1) //Turning right
   {
-  	mazeTurn(50,0);
+  	mazeTurn(50,-10);
     if (scan_front < 400) //if large enough gap in front of robot
     {
       mazeTurning = 0;
@@ -104,7 +104,7 @@ void mazeMove(){
   }
   else if (mazeTurning == -1) //Turning left
   {
-    mazeTurn(0,50); 
+    mazeTurn(-10,50); 
     if (scan_front < 400) //if large enough gap in front of robot
     {
       mazeTurning = 0;
