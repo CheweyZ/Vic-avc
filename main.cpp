@@ -9,9 +9,9 @@
 #define CAMERA_WIDTH 320 //Control Resolution from Camera
 #define CAMERA_HEIGHT 240 //Control Resolution from Camera
 // unsigned char pixels_buf[CAMERA_WIDTH*CAMERA_HEIGHT*4];
-int midCameraBlind=10;
-int maxMotorSpeed=80;
-int reverseSpeed=80;
+int midCameraBlind=5;
+int maxMotorSpeed=60;
+int reverseSpeed=60;
 int lMSpd=maxMotorSpeed;
 int rMSpd=maxMotorSpeed;
 int readRange=(CAMERA_WIDTH/2)-midCameraBlind;
@@ -19,10 +19,15 @@ int readRange=(CAMERA_WIDTH/2)-midCameraBlind;
 int boundarySum=(readRange*(readRange+1))/2;
 // int rightBoundarySum=((readRange-1)*(readRange))/2;
 double effectFactor=1; //the factor that correction effect is 0-100% (0- to 1)
+double effectFactorReverse=1.8;
+int reverseThreshold=20;
 int blackWhiteTolerance=30;
 int baseWhiteMin=110;
+// int reverseBoostForShift=70;
 
-int loopForceTimer=100;
+int reverseSleepTime=300000;
+
+int loopForceTimer=300;
 
 // returns color component (color==0 -red,color==1-green,color==2-blue
 // color == 3 - luminocity
@@ -77,7 +82,7 @@ int processExit(){
 }
 
 void reverse(int amt){
-  rMSpd=-amt+50;
+  rMSpd=-amt;//+50
   lMSpd=-amt;
   updateMotorSpeed();
   printf("Sleep Start\n");
@@ -113,13 +118,40 @@ int driveWithShift(int directionShift) {
             // validate maybe if effect needed is over say 90 or 95 is it maybe a turn that have found
             lMSpd=maxMotorSpeed;
             rMSpd=maxMotorSpeed*(effectFactor*(1-effectNeeded));
+            bool didRev=false;
+            // if (rMSpd<0){rMSpd=0;}
+            // printf("RM Spd%d\n", rMSpd);
+            if (rMSpd<reverseThreshold){
+              rMSpd=-(maxMotorSpeed*(effectFactorReverse*(effectNeeded)));//-reverseBoostForShift
+              didRev=true;
+            }
             updateMotorSpeed();
+            if (didRev){
+              sleep1(0,reverseSleepTime);
+              lMSpd=maxMotorSpeed;
+              rMSpd=maxMotorSpeed;
+              updateMotorSpeed();
+              sleep1(0,reverseSleepTime);
+            }
             // printf("Left drift Lm:%d Rm:%d Ef:%f dS:%d\n",lMSpd,rMSpd,effectNeeded,directionShift);
         }else if (directionShift>0){ //drifted right
             double effectNeeded=((double)directionShift)/boundarySum; // shows total shift and effect needed
             lMSpd=maxMotorSpeed*(effectFactor*(1-effectNeeded));
+            bool didRev=false;
+            // if (lMSpd<0){lMSpd=0;}
+            if (lMSpd<reverseThreshold){
+              lMSpd=-(maxMotorSpeed*(effectFactorReverse*(effectNeeded)));//-reverseBoostForShift
+              didRev=true;
+            }
             rMSpd=maxMotorSpeed;
             updateMotorSpeed();
+            if (didRev){
+              sleep1(0,reverseSleepTime);
+              lMSpd=maxMotorSpeed;
+              rMSpd=maxMotorSpeed;
+              updateMotorSpeed();
+              sleep1(0,reverseSleepTime);
+            }
             // printf("Right drift Lm:%d Rm:%d Ef:%f dS:%d\n",lMSpd,rMSpd,effectNeeded,directionShift);
         }
     } else { // if no shift
@@ -172,10 +204,10 @@ int cameraScanner(){
   for (int i = 0; i <320;i++){
   // whi[i]= 0 ;
   int pix = get_pixel(scan_row,i,3);
+  // printf("LShift:%d Rshift:%d\n", leftShift,rightShift);
   if ( pix > thr){
     if (i<midLeftPoint){
       leftShift+=midLeftPoint-i;
-      // printf("LShift:%d Rshift:%d\n", leftShift,rightShift);
     }else if(i>midRightPoint){
       rightShift+=i-midRightPoint;
     }
