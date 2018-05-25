@@ -113,17 +113,22 @@ void mazeMove(){
   else if (mazeTurning == 2) //realign right
   {
     mazeTurn(50,40);
-    if (scan_left < 400)
+    printf("trigger1\n");
+    if (scan_left < 400)//scan_left > 400 && mazeTurning%2 == 0
     { // if scan of each wall is roughly similar
       mazeTurning == 0;
+      printf("trigger2\n");
     }
   }
   else if (mazeTurning == -2) //realign left
   {
     mazeTurn(40,50);
+    printf("trigger1\n");
     if (scan_right < 400)
     {
       mazeTurning == 0;
+      printf("trigger2\n");
+
     }
   }
   else if (mazeTurning == 10)
