@@ -45,10 +45,8 @@ void reverseAndTurn(){  /**Needs adjustment*/
     //  and turn 180
     mazeTurn(60,60); //reversing but is facing other direction
     sleep1(5,0);
-    mazeTurn(-80,0); //want it to turn backwards left
-    sleep1(3,500000);
-    mazeTurn(0,80); //turns forwards and to the right
-    sleep1(3,500000);
+    mazeTurn(-80,80); //rotates on spot
+    sleep1(3,0);
 }
 
 void lineFollow(){ /**Needs adjustment*/
