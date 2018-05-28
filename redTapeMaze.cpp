@@ -26,7 +26,7 @@ int leftMotor = 1;
 int rightMotor = 2;
 
 /////////////////////////////////
-// Code used in other sections
+// Code used in (maze) other sections
 /////////////////////////////////
 
 void mazeTurn(int lSpeed, int rSpeed){  //change to main codes turn
@@ -78,7 +78,7 @@ int redTest() {
 void mazeIntroSection(){
     if (red == 0)
     {
-        red = redTest()
+        red = redTest();
     }
     if (red == 1)
     {
