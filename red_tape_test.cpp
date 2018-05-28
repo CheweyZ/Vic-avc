@@ -67,7 +67,7 @@ int main() {
 	int x = 0;
 	while (x < 100) {
 		take_picture();
-		redTest(scan_front);
+		redTest(100); //changed var to avoid overlapping vars when combining code
 		x= x +1;
 	}
 }
