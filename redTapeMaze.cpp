@@ -1,7 +1,6 @@
 /////////////////////////////////
 // Libs
 /////////////////////////////////
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -15,7 +14,7 @@ int red = 0;
 int redLineSect = 0;
 
 /////////////////////////////////
-// maze seciton vars
+// maze seciton vars that also is used here
 /////////////////////////////////
 
 int scan_front;
@@ -30,17 +29,17 @@ int rightMotor = 2;
 /////////////////////////////////
 
 void mazeTurn(int lSpeed, int rSpeed){  //change to main codes turn
-  printf("left: %d ... ", lSpeed);
-  printf("right: %d\n", rSpeed);
-  set_motor(rightMotor,lSpeed);
-  set_motor(leftMotor,rSpeed);
+    printf("left: %d ... ", lSpeed);
+    printf("right: %d\n", rSpeed);
+    set_motor(rightMotor,lSpeed);
+    set_motor(leftMotor,rSpeed);
 }
 
 /////////////////////////////////
 // Main code
 /////////////////////////////////
 
-void reverseAndTurn(){
+void reverseAndTurn(){  /**Needs adjustment*/
     //runs code that makes the robot
     //  backs out of the maze
     //  and turn 180
@@ -48,11 +47,11 @@ void reverseAndTurn(){
     sleep1(1,0);
     mazeTurn(0,-70); //want it to turn backwards left
     sleep1(0,500000);
-    mazeTurn(70,0); //
+    mazeTurn(70,0); //turns forwards and to the right
 }
 
-void lineFollow(){
-    //does code that makes it follow line (with reverse motors)
+void lineFollow(){ /**Needs adjustment*/
+    //does code that makes it follow line (with reverse motors/using camera backwards?)
 }
 
 
@@ -132,7 +131,8 @@ void redLineCode(){
 
 int main (){
     init();
-
+    reverseAndTurn();
+    /*
     if (redLineSect < 2)
     {
         redLineCode();
@@ -141,7 +141,7 @@ int main (){
     {
         //call mazeSection();
     }
-
+    */
     printf("finished!\n");
 return 0;
 }
