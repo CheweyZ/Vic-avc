@@ -77,7 +77,7 @@ void testTurn(){
   if (scan_front > 490) //when robot is way too close to wall
   {
 	mazeTurn(-60,-60);
-	sleep1(0,350000);
+	sleep1(0,250000);
 	printf("backing back");
   }
 
