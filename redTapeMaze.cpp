@@ -44,10 +44,11 @@ void reverseAndTurn(){  /**Needs adjustment*/
     //  backs out of the maze
     //  and turn 180
     mazeTurn(50,50); //reversing but is facing other direction
-    sleep1(1,0);
+    sleep1(5,0);
     mazeTurn(0,-70); //want it to turn backwards left
-    sleep1(0,500000);
+    sleep1(2,500000);
     mazeTurn(70,0); //turns forwards and to the right
+    sleep1(2,500000);
 }
 
 void lineFollow(){ /**Needs adjustment*/
@@ -142,6 +143,7 @@ int main (){
         //call mazeSection();
     }
     */
+	mazeTurn(0,0);
     printf("finished!\n");
 return 0;
 }
