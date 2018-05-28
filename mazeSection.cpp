@@ -22,7 +22,7 @@ int mazeTurning = 0; //(-ve(Left),0(Straight),+ve(Right))
 
 // vars for repeat amounts (also used in other section)
 int sleepAmount = 10000; //time between each iteration
-int loopForceTimer = 1000; //for testing
+int loopForceTimer = 600; //for testing
 
 //////////////////////////////////
 //functions						//
@@ -103,7 +103,7 @@ void mazeMove(){
     {
       mazeTurning = 0;
       mazeTurn(60,-60);
-      sleep1(1,0);
+      sleep1(0,100000);
     } 
   }
   else if (mazeTurning == -1) //Turning left
@@ -112,8 +112,8 @@ void mazeMove(){
     if (scan_front < 400) //if large enough gap in front of robot
     {
       mazeTurning = 0;
-      mazeTurn(60,-60);
-      sleep1(1,0);
+      mazeTurn(-60,60);
+      sleep1(0,100000);
     }
   }
   else if (mazeTurning == 2) //realign right
