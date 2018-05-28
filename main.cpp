@@ -10,8 +10,8 @@
 #define CAMERA_HEIGHT 240 //Control Resolution from Camera
 // unsigned char pixels_buf[CAMERA_WIDTH*CAMERA_HEIGHT*4];
 int midCameraBlind=5;
-int maxMotorSpeed=60;
-int reverseSpeed=60;
+int maxMotorSpeed=80;
+int reverseSpeed=80;
 int lMSpd=maxMotorSpeed;
 int rMSpd=maxMotorSpeed;
 int readRange=(CAMERA_WIDTH/2)-midCameraBlind;
@@ -20,14 +20,14 @@ int boundarySum=(readRange*(readRange+1))/2;
 // int rightBoundarySum=((readRange-1)*(readRange))/2;
 double effectFactor=1; //the factor that correction effect is 0-100% (0- to 1)
 double effectFactorReverse=1.8;
-int reverseThreshold=20;
+int reverseThreshold=50; //20 prior
 int blackWhiteTolerance=30;
 int baseWhiteMin=110;
 // int reverseBoostForShift=70;
 
-int reverseSleepTime=300000;
+int reverseSleepTime=200000;
 
-int loopForceTimer=300;
+int loopForceTimer=100;
 
 // returns color component (color==0 -red,color==1-green,color==2-blue
 // color == 3 - luminocity
@@ -69,8 +69,12 @@ int loopForceTimer=300;
 // }
 
 int updateMotorSpeed(){
-  set_motor(1,rMSpd);
-  set_motor(2,lMSpd);
+  int lMSpdL=(lMSpd<0)?abs(lMSpd):-lMSpd;
+  int rMSpdL=(rMSpd<0)?abs(rMSpd):-rMSpd;
+  // if (rMSpd<0){rMspdL=abs(rMSpd)}else{rMspdL}
+  
+  set_motor(2,rMSpdL); //1 is left motor but backward so inversed
+  set_motor(1,lMSpdL);
   return 0;
 }
 
@@ -86,7 +90,7 @@ void reverse(int amt){
   lMSpd=-amt;
   updateMotorSpeed();
   printf("Sleep Start\n");
-  sleep1(0,500000);
+  sleep1(0,700000);
   rMSpd=0;
   lMSpd=0;
   updateMotorSpeed();
