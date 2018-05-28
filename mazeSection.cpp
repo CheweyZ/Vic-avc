@@ -17,10 +17,12 @@ int r = 2;
 int leftMotor = 1;
 int rightMotor = 2;
 
+// var to know if turning/adjusting/going straight while in maze
 int mazeTurning = 0; //(-ve(Left),0(Straight),+ve(Right))
 
-int sleepAmount = 10000;
-int loopForceTimer = 1000;
+// vars for repeat amounts (also used in other section)
+int sleepAmount = 10000; //time between each iteration
+int loopForceTimer = 1000; //for testing
 
 //////////////////////////////////
 //functions						//
@@ -74,7 +76,7 @@ void testTurn(){
 
   if (scan_front > 490) //when robot is way too close to wall
   {
-	mazeTurn(-50,-50);
+	mazeTurn(-60,-60);
 	sleep1(0,350000);
 	printf("backing back");
   }
@@ -96,23 +98,27 @@ void mazeMove(){
 
   if (mazeTurning == 1) //Turning right
   {
-  	mazeTurn(50,-50);
+  	mazeTurn(60,-60);
     if (scan_front < 400) //if large enough gap in front of robot
     {
       mazeTurning = 0;
+      mazeTurn(60,-60);
+      sleep1(1,0);
     } 
   }
   else if (mazeTurning == -1) //Turning left
   {
-    mazeTurn(-50,50); 
+    mazeTurn(-60,60); 
     if (scan_front < 400) //if large enough gap in front of robot
     {
       mazeTurning = 0;
+      mazeTurn(60,-60);
+      sleep1(1,0);
     }
   }
   else if (mazeTurning == 2) //realign right
   {
-    mazeTurn(50,40);
+    mazeTurn(60,45);
     if (scan_left < 400)
     { // if scan of each wall is roughly similar
       mazeTurning = 0;
@@ -120,7 +126,7 @@ void mazeMove(){
   }
   else if (mazeTurning == -2) //realign left
   {
-    mazeTurn(40,50);
+    mazeTurn(45,60);
     if (scan_right < 400)
     {
       mazeTurning = 0;
@@ -128,7 +134,7 @@ void mazeMove(){
   }
   else if (mazeTurning == 10)
   { // going backwards but shouldnt be needed to be called
-  	mazeTurn(-50,-40);
+  	mazeTurn(-60,-45);
   	if (scan_front < 400)
   	{
   	  mazeTurning = 0;
