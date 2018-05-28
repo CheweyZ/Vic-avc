@@ -99,7 +99,7 @@ void mazeMove(){
   if (mazeTurning == 1) //Turning right
   {
   	mazeTurn(60,-60);
-    if (scan_front < 400 && scan_right > 300) //if large enough gap in front of robot
+    if (scan_front < 400 && (scan_left > 300||scan_right > 300)) //if large enough gap in front of robot
     {
       mazeTurning = 0;
       mazeTurn(60,-60);
@@ -109,7 +109,7 @@ void mazeMove(){
   else if (mazeTurning == -1) //Turning left
   {
     mazeTurn(-60,60); 
-    if (scan_front < 400 && scan_left > 300) //if large enough gap in front of robot
+    if (scan_front < 400 && (scan_left > 300||scan_right > 300)) //if large enough gap in front of robot
     {
       mazeTurning = 0;
       mazeTurn(-60,60);
