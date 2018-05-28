@@ -43,12 +43,12 @@ void reverseAndTurn(){  /**Needs adjustment*/
     //runs code that makes the robot
     //  backs out of the maze
     //  and turn 180
-    mazeTurn(50,50); //reversing but is facing other direction
+    mazeTurn(60,60); //reversing but is facing other direction
     sleep1(5,0);
-    mazeTurn(0,-70); //want it to turn backwards left
-    sleep1(2,500000);
-    mazeTurn(70,0); //turns forwards and to the right
-    sleep1(2,500000);
+    mazeTurn(-80,0); //want it to turn backwards left
+    sleep1(3,500000);
+    mazeTurn(0,80); //turns forwards and to the right
+    sleep1(3,500000);
 }
 
 void lineFollow(){ /**Needs adjustment*/
