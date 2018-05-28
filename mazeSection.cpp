@@ -141,7 +141,7 @@ void mazeMove(){
   	}
 
   }
-  printf("front: %d left: %d right: %d turnNum: %d\n",scan_front,scan_left,scan_right,mazeTurning);
+  //printf("front: %d left: %d right: %d turnNum: %d\n",scan_front,scan_left,scan_right,mazeTurning);
   // going straight or updated to go straight
   if (mazeTurning == 0)
   {
