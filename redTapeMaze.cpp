@@ -35,9 +35,9 @@ void mazeTurn(int lSpeed, int rSpeed){  //change to main codes turn
     set_motor(leftMotor,rSpeed);
 }
 
-/////////////////////////////////
-// Line follow code
-/////////////////////////////////
+////////////////////////////////////////
+// Line follow code (from old branch) //
+////////////////////////////////////////
 
 #define CAMERA_WIDTH 320 //Control Resolution from Camera
 #define CAMERA_HEIGHT 240 //Control Resolution from Camera
@@ -64,49 +64,9 @@ int reverseSleepTime=200000;
 
 int loopForceTimer=100;
 
-// returns color component (color==0 -red,color==1-green,color==2-blue
-// color == 3 - luminocity
-// for pixel located at (row,column)
-// unsigned char get_pixel( int row,int col, int color)
-// {
-//     // calculate address in 1D array of pixels
-//     int address = CAMERA_WIDTH*row*3 + col*3;
-//     if ((row < 0 ) || (row > CAMERA_HEIGHT) )
-//     {
-//         printf("row is out of range\n");
-//         return -1;
-//     }
-//     if ( (col< 0) || (col > CAMERA_WIDTH))
-//     {
-//         printf("column is out of range\n");
-//         return -1;
-//     }
-// 
-//     if (color==0)
-//     {
-//         return (pixels_buf[address]);
-//     }
-//     if (color==1)
-//     {
-//         return (pixels_buf[address + 1]);
-//     }
-//     if (color==2)
-//     {
-//         return (pixels_buf[address + 2]);
-//     }
-//     if (color==3)
-//     {
-//         unsigned char y = (pixels_buf[address] + pixels_buf[address+1] +pixels_buf[address+2])/3;
-//         return y;
-//     }
-//     printf("Color encoding wrong: 0-red, 1-green,2-blue,3 - luminosity\n");
-//     return -2; //error
-// }
-
 int updateMotorSpeedBM(){
   int lMSpdL=(lMSpd<0)?abs(lMSpd):-lMSpd;
   int rMSpdL=(rMSpd<0)?abs(rMSpd):-rMSpd;
-  // if (rMSpd<0){rMspdL=abs(rMSpd)}else{rMspdL}
   
   set_motor(2,rMSpdL); //1 is left motor but backward so inversed
   set_motor(1,lMSpdL);
@@ -158,8 +118,6 @@ int driveWithShiftBM(int directionShift) {
             lMSpd=maxMotorSpeed;
             rMSpd=maxMotorSpeed*(effectFactor*(1-effectNeeded));
             bool didRev=false;
-            // if (rMSpd<0){rMSpd=0;}
-            // printf("RM Spd%d\n", rMSpd);
             if (rMSpd<reverseThreshold){
               rMSpd=-(maxMotorSpeed*(effectFactorReverse*(effectNeeded)));//-reverseBoostForShift
               didRev=true;
