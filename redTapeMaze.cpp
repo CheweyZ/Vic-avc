@@ -329,12 +329,26 @@ void mazeSectionDoorTest(){ //should be run at the same time as the maze code
         redLineSect = 2;
     }
 }
+
+void redLineCode(){
+    if (redLineSect == 1)
+    {
+        mazeIntroSection();    
+    }
+    else if (redLineSect == 2)
+    {
+        mazeSectionDoorTest();
+    }
+
+
+
+
+}
+
     
 int main (){
     init();
     //reverseAndTurn(;
-        take_picture();
-    cameraScannerBM(); 
 
 
 
