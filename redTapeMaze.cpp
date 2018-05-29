@@ -39,7 +39,7 @@ void mazeTurn(int lSpeed, int rSpeed){  //change to main codes turn
 // Main code
 /////////////////////////////////
 
-void reverseAndTurn(){  /**Needs adjustment*/
+void reverseAndTurn(){
     //runs code that makes the robot
     //  backs out of the maze
     //  and turn 180
@@ -50,7 +50,7 @@ void reverseAndTurn(){  /**Needs adjustment*/
 }
 
 void lineFollow(){ /**Needs adjustment*/
-    //does code that makes it follow line (with reverse motors/using camera backwards?)
+	//run old line follow code
 }
 
 
@@ -63,8 +63,8 @@ int redTest() {
         int green = get_pixel(scaning_row,i,1); //check for green
         int blue = get_pixel(scaning_row,i,2); //check for blue
         if ((red > 200) && (green < 100) && (blue < 100)){
-			red_total = red_total + red; //add the output to red_total
-		}
+            red_total = red_total + red; //add the output to red_total
+        }
     }
     printf("red_total = %d \n", red_total);
     if( red_total > 4000) { //if significant enough red has been found
@@ -80,9 +80,13 @@ void mazeIntroSection(){
     }
     if (red == 1)
     {
-        reverseAndTurn(); //gets out of maze and then turns 180
+        if (redSensFirstTime == 1)
+        {
+	        reverseAndTurn(); //gets out of maze and then turns 180
+	        redSensFirstTime = 0;
+        }
         lineFollow(); //does line test to get towards maze again but reverse
-        if (scan_left > 200 && scan_right > 200)
+        if (scan_left > 300 && scan_right > 300)
         {
             redLineSect = 1;
             mazeTurn(50,50); //goes forward to pass the red line
@@ -130,8 +134,8 @@ void redLineCode(){
 
 int main (){
     init();
-    reverseAndTurn();
-    /*
+    //reverseAndTurn();
+    
     if (redLineSect < 2)
     {
         redLineCode();
@@ -140,8 +144,8 @@ int main (){
     {
         //call mazeSection();
     }
-    */
-	mazeTurn(0,0);
+    
+    mazeTurn(0,0);
     printf("finished!\n");
 return 0;
 }
