@@ -12,7 +12,7 @@
 
 int red = 0;
 int redLineSect = 0;
-
+int redSensFirstTime = 1;
 /////////////////////////////////
 // maze seciton vars that also is used here
 /////////////////////////////////
