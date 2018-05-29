@@ -326,6 +326,9 @@ void mazeSectionDoorTest(){ //should be run at the same time as the maze code
             printf("wall is down\n");
         } 
         printf("wall is up\n");
+        redLineSect = 2;
+    }
+}
     
 int main (){
     init();
