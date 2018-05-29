@@ -339,19 +339,9 @@ void redLineCode(){
     {
         mazeSectionDoorTest();
     }
-
-
-
-
 }
 
-    
-int main (){
-    init();
-    //reverseAndTurn(;
-
-
-
+void temp(){
     if (redLineSect < 2)
     {
         redLineCode();
@@ -359,6 +349,17 @@ int main (){
     if (redLineSect > 0)
     {
         //call mazeSection();
+    }
+
+}
+    
+int main (){
+    init();
+
+    for (int i = 0; i < 1000; ++i)
+    {
+        temp();
+        sleep1(0,500000);
     }
     
     mazeTurn(0,0);
