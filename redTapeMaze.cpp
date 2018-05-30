@@ -154,7 +154,7 @@ int main (){
     {
         temp();
         sleep1(0,100000);
-        printf("%s %s\n", red1, redLineSect);
+        printf("%f %f\n", red1, redLineSect);
     }
     
     mazeTurn(0,0);
