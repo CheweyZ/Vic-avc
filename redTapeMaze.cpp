@@ -10,7 +10,7 @@
 // New initing of vars
 /////////////////////////////////
 
-int red = 0;
+int red1 = 0;
 int redLineSect = 0;
 int redSensFirstTime = 1;
 /////////////////////////////////
@@ -287,11 +287,11 @@ int redTest() {
 }
 
 void mazeIntroSection(){
-    if (red == 0)
+    if (red1 == 0)
     {
-        red = redTest();
+        red1 = redTest();
     }
-    if (red == 1)
+    if (red1 == 1)
     {
         if (redSensFirstTime == 1)
         {
@@ -305,15 +305,15 @@ void mazeIntroSection(){
             mazeTurn(50,50); //goes forward to pass the red line
             sleep1(0,500000);
             mazeTurn(0,0);
-            red = 0;
+            red1 = 0;
         }
 
     }
 }
 
 void mazeSectionDoorTest(){ //should be run at the same time as the maze code
-    red = redTest();
-    if (red == 1)
+    red1 = redTest();
+    if (red1 == 1)
     {
         mazeTurn(0,0);
         if (scan_front > 300)
@@ -357,12 +357,14 @@ void temp(){
     
 int main (){
     init();
+    red1 = 0;
+    redLineSect = 0;
 
     for (int i = 0; i < 600; i++)
     {
         temp();
         sleep1(0,100000);
-        printf("%s %s\n", red, redLineSect);
+        printf("%s %s\n", red1, redLineSect);
     }
     
     mazeTurn(0,0);
