@@ -10,8 +10,8 @@
 #define CAMERA_HEIGHT 240 //Control Resolution from Camera
 // unsigned char pixels_buf[CAMERA_WIDTH*CAMERA_HEIGHT*4];
 int midCameraBlind=5;
-int maxMotorSpeed=60;
-int reverseSpeed=60;
+int maxMotorSpeed=60; //best 60
+int reverseSpeed=80;
 int lMSpd=maxMotorSpeed;
 int rMSpd=maxMotorSpeed;
 int readRange=(CAMERA_WIDTH/2)-midCameraBlind;
@@ -20,16 +20,19 @@ int boundarySum=(readRange*(readRange+1))/2;
 // int rightBoundarySum=((readRange-1)*(readRange))/2;
 double effectFactor=1; //the factor that correction effect is 0-100% (0- to 1)
 double effectFactorReverse=1.6;
-int reverseThreshold=15; //20 prior
+int reverseThreshold=20; //15 prior
 int blackWhiteTolerance=30;
 int baseWhiteMin=110;
 
-int tThres=700;
+int tThres=200;
+// bool iJustWentFoward=false;
 // int reverseBoostForShift=70;
 
 int reverseSleepTime=200000;
 
-int loopForceTimer=100;
+int turnIgnoreTime= 200000;
+
+int loopForceTimer=500;
 
 // returns color component (color==0 -red,color==1-green,color==2-blue
 // color == 3 - luminocity
@@ -100,11 +103,19 @@ void reverse(int amt){
   printf("Sleep End\n");
 }
 
+void iCanGoFoward(){
+  printf("Can also go foward\n");
+  lMSpd=maxMotorSpeed;
+  rMSpd=maxMotorSpeed;
+  updateMotorSpeed();
+  // sleep1(0,turnIgnoreTime);
+}
+
 void turnLeft(int speed){
   int rSpd=rMSpd;
   int lSpd=lMSpd;
   rMSpd=speed;
-  lMSpd=-speed+20;
+  lMSpd=-speed+10;
   updateMotorSpeed();
   printf("Sleep Start\n");
   sleep1(0,500000);
@@ -170,9 +181,9 @@ int driveWithShift(int directionShift) {
 int cameraScanner(){
   int max = 0;
   int min =255;
-  int scan_row = 120;
-  int secondScanRow=240;
-  int secondMinMaxRow=160;
+  int scan_row = 230; //max of 239
+  int secondScanRow=0;
+  int secondMinMaxRow=100;
   for (int i = 0; i <320;i++)
 {
   int pix = get_pixel(scan_row,i,3);
@@ -222,27 +233,29 @@ int cameraScanner(){
   }
   }
   
-  // int secondaryLeft=0;
-  // int secondaryRight=0;
-  // for (int i = 0; i <320;i++){
-  // // whi[i]= 0 ;
-  // int pix = get_pixel(secondScanRow,i,3);
-  // // printf("LShift:%d Rshift:%d\n", leftShift,rightShift);
-  // if ( pix > thr){
-  //   if (i<midLeftPoint+midCameraBlind){
-  //     secondaryLeft+=(midLeftPoint+midCameraBlind)-i;
-  //   }else if(i>midRightPoint+midCameraBlind){
-  //     secondaryRight+=i-(midRightPoint+midCameraBlind);
-  //   }
-  //   // whi[i] = 1;
-  // }
-  // }
-  // 
-  // // bool canGoFoward
-  // if (secondaryLeft>tThres&&secondaryRight>tThres){
-  //   printf("I can go foward at this T ?\n");
-  // }
+  int secondaryLeft=0;
+  int secondaryRight=0;
+  for (int i = 0; i <320;i++){
+  // whi[i]= 0 ;
+  int pix = get_pixel(secondScanRow,i,3);
   // printf("LShift:%d Rshift:%d\n", leftShift,rightShift);
+  if ( pix > thr){
+    if (i<(midLeftPoint+midCameraBlind)){
+      secondaryLeft+=(midLeftPoint+midCameraBlind)-i;
+    }else if(i>(midRightPoint-midCameraBlind+1)){
+      secondaryRight+=i-(midRightPoint-midCameraBlind);
+    }
+    // whi[i] = 1;
+  }
+  }
+  // 
+  bool canGoFoward=false;
+  if (secondaryLeft>tThres||secondaryRight>tThres){
+    // printf("I can go foward at this T ?\n");
+    canGoFoward=true;
+  }
+  // printf("LShift:%d Rshift:%d\n", leftShift,rightShift);
+  // printf("LShift:%d Rshift:%d\n", secondaryLeft,secondaryRight);
   
   // printf("Min %d Max %d\n",min,max );
   if (abs(min-max)<blackWhiteTolerance){
@@ -261,23 +274,35 @@ int cameraScanner(){
     // Left max = 11325  right max=11175 (right is less due to blind spot)
   // }
   
+  int directionShift=leftShift-rightShift;
   // possible check on these is if called read a row a bit above then determine if foward is also option (maybe a function just to return if white strip)
   if (leftShift==boundarySum&& rightShift==boundarySum){ // at a 2 way intersection (should check if can go ahead so look a line up)
     // As C cant return 2 values instead need to copy code (so effecent) with recalulation for a some row up to determin if
     // can go foward or if its only a T
     printf("I can turn both ways\n");
-    turnLeft(70);// at a T we always turn right
+    if (canGoFoward){
+      iCanGoFoward();;return 0;};
+    // if (!iJustWentFoward){
+      turnLeft(70);// at a T we always turn right
+    // }else{
+    //   lMSpd = maxMotorSpeed;
+    //   rMSpd = maxMotorSpeed;
+    //   updateMotorSpeed();
+    //   sleep1(0,100000);
+    // }
+    // iJustWentFoward=!iJustWentFoward;
   }else if (leftShift==boundarySum){
     // left turn option
     printf("I can turn left\n");
+    if (canGoFoward){iCanGoFoward();return 0;};
   }else if (rightShift==boundarySum){
     // right turn option
     printf("I can turn right\n");
+    if (canGoFoward){iCanGoFoward();return 0;};
   }else if (rightShift==0&& leftShift==0){
     printf("Lets check is there still a path here?\n");
     reverse(reverseSpeed);
   }
-  int directionShift=leftShift-rightShift;
   // negative is drifted left +is drifted to right
   driveWithShift(directionShift);
   
@@ -289,9 +314,25 @@ int cameraScanner(){
   return 0;
 }
 
+
+void passwordGate(){
+	char serverAddr[15]={'1','3','0','.','1','9','5','.','6','.','1','9','6'};
+	char message[24]={'P','l','e','a','s','e'};
+	char password[24];
+	connect_to_server(serverAddr, 1024);
+	send_to_server(message);
+	receive_from_server(password);
+	printf(password);
+	send_to_server(password);
+}
+
 int main (){
   int x=0;
   init();
+  // passwordGate();
+  // sleep1(1,0);
+  
+  
   // set_motor(1,100);
   // sleep1(5,0);
   // set_motor(1,-100);
@@ -300,6 +341,7 @@ int main (){
   while (x<loopForceTimer) {
     take_picture();
     cameraScanner();
+    // sleep1(0,50000);
     x++;
   }
   processExit();
