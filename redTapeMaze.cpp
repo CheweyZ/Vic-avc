@@ -77,6 +77,7 @@ int redTest() {
 }
 
 void mazeIntroSection(){
+    printf("mazeIntroSection\n");
     if (red1 == 0)
     {
         red1 = redTest();
@@ -102,6 +103,7 @@ void mazeIntroSection(){
 }
 
 void mazeSectionDoorTest(){ //should be run at the same time as the maze code
+    printf("mazeDoorTest\n");
     red1 = redTest();
     if (red1 == 1)
     {
@@ -122,6 +124,7 @@ void mazeSectionDoorTest(){ //should be run at the same time as the maze code
 }
 
 void redLineCode(){
+    printf("run redLineCode\n");
     if (redLineSect == 1)
     {
         mazeIntroSection();    
@@ -150,7 +153,7 @@ int main (){
     red1 = 0;
     redLineSect = 0;
 
-    for (int i = 0; i < 600; i++)
+    for (int i = 0; i < 200; i++)
     {
         temp();
         sleep1(0,100000);
