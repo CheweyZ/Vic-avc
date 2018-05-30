@@ -71,3 +71,23 @@ int main() {
 		x= x +1;
 	}
 }
+
+
+
+
+
+
+/////////////////////////
+
+bool redTest(int scaning_row) {
+    int red_total = 0;
+    for (int i = 0; i < 320;i++) { //check pixels along an entire line
+        int pix = get_pixel(scaning_row,i,0); //check for red pixels
+        int red_total = red_total + pix; //add the output to red_total
+    }
+     if( red_total > 1000) { //if significant enough red has been found
+        return true;
+    } else {
+    	return false;     	
+    }
+}
