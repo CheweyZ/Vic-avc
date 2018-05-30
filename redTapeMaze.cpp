@@ -357,10 +357,11 @@ void temp(){
 int main (){
     init();
 
-    for (int i = 0; i < 1000; ++i)
+    for (int i = 0; i < 600; i++)
     {
         temp();
-        sleep1(0,500000);
+        sleep1(0,100000);
+
     }
     
     mazeTurn(0,0);
