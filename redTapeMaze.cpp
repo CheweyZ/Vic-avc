@@ -261,7 +261,6 @@ void reverseAndTurn(){
 }
 
 void lineFollow(){ /**Needs adjustment*/
-    take_picture();
     cameraScannerBM();
 }
 
@@ -334,6 +333,7 @@ void mazeSectionDoorTest(){ //should be run at the same time as the maze code
 void redLineCode(){
     if (redLineSect == 1)
     {
+        take_picture();
         mazeIntroSection();    
     }
     else if (redLineSect == 2)
@@ -361,7 +361,7 @@ int main (){
     {
         temp();
         sleep1(0,100000);
-
+        printf("%s %s\n", red, redLineSect);
     }
     
     mazeTurn(0,0);
