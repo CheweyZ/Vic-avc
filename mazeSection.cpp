@@ -25,7 +25,7 @@ int sleepAmount = 10000; //time between each iteration
 int loopForceTimer = 600; //for testing
 
 //////////////////////////////////
-//functions						//
+//functions           //
 //////////////////////////////////
 
 void mazeTurn(int lSpeed, int rSpeed){  //change to main codes turn
@@ -76,9 +76,9 @@ void testTurn(){
 
   if (scan_front > 490) //when robot is way too close to wall
   {
-	mazeTurn(-60,-60);
-	sleep1(0,350000);
-	printf("backing back");
+  mazeTurn(-60,-60);
+  sleep1(0,350000);
+  printf("backing back");
   }
 
   //reallign if front is too close on one side if nec
@@ -98,22 +98,29 @@ void mazeMove(){
 
   if (mazeTurning == 1) //Turning right
   {
-  	mazeTurn(60,-60);
-    if (scan_front < 400 && (scan_left > 300||scan_right > 300)) //if large enough gap in front of robot
+    mazeTurn(60,-60);
+    if (scan_front < 400) //if large enough gap in front of robot
     {
       mazeTurning = 0;
-      mazeTurn(60,-60);
-      sleep1(0,150000);
+      if (scan_left < 300 && scan_right < 300)
+      {
+	      mazeTurn(60,-60);
+	      sleep1(0,150000);
+  	  }
     } 
   }
   else if (mazeTurning == -1) //Turning left
   {
     mazeTurn(-60,60); 
-    if (scan_front < 400 && (scan_left > 300||scan_right > 300)) //if large enough gap in front of robot
+    if (scan_front < 400) //if large enough gap in front of robot
     {
       mazeTurning = 0;
-      mazeTurn(-60,60);
-      sleep1(0,150000);
+      if (scan_left < 300 && scan_right < 300)
+      {
+	      mazeTurn(-60,60);
+	      sleep1(0,150000);
+      }
+
     }
   }
   else if (mazeTurning == 2) //realign right
@@ -134,11 +141,11 @@ void mazeMove(){
   }
   else if (mazeTurning == 10)
   { // going backwards but shouldnt be needed to be called
-  	mazeTurn(-50,-50);
-  	if (scan_front < 400)
-  	{
-  	  mazeTurning = 0;
-  	}
+    mazeTurn(-50,-50);
+    if (scan_front < 400)
+    {
+      mazeTurning = 0;
+    }
 
   }
   printf("front: %d left: %d right: %d turnNum: %d\n",scan_front,scan_left,scan_right,mazeTurning);
