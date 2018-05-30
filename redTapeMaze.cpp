@@ -281,6 +281,7 @@ int redTest() {
     printf("red_total = %d \n", red_total);
     if( red_total > 4000) { //if significant enough red has been found
         returnVal = 1;
+        printf("red line\n");
     }
     return returnVal;
 }
