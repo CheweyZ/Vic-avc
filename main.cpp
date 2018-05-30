@@ -10,17 +10,18 @@
 #define CAMERA_HEIGHT 240 //Control Resolution from Camera
 // unsigned char pixels_buf[CAMERA_WIDTH*CAMERA_HEIGHT*4];
 int midCameraBlind=5;
-int maxMotorSpeed=60; //best 60
+int maxMotorSpeed=55; //best 60
 int reverseSpeed=80;
 int lMSpd=maxMotorSpeed;
 int rMSpd=maxMotorSpeed;
 int readRange=(CAMERA_WIDTH/2)-midCameraBlind;
 // Sum 1 to n  https://betterexplained.com/articles/techniques-for-adding-the-numbers-1-to-100/
-int boundarySum=(readRange*(readRange+1))/2;
+int readSkip=2;
+int boundarySum=((readRange-readSkip)*((readRange+1)-readSkip))/2;
 // int rightBoundarySum=((readRange-1)*(readRange))/2;
 double effectFactor=1; //the factor that correction effect is 0-100% (0- to 1)
 double effectFactorReverse=1.6;
-int reverseThreshold=20; //15 prior
+int reverseThreshold=15; //15 prior
 int blackWhiteTolerance=30;
 int baseWhiteMin=110;
 
@@ -32,7 +33,7 @@ int reverseSleepTime=200000;
 
 int turnIgnoreTime= 200000;
 
-int loopForceTimer=500;
+int loopForceTimer=2500;
 
 // returns color component (color==0 -red,color==1-green,color==2-blue
 // color == 3 - luminocity
@@ -291,11 +292,11 @@ int cameraScanner(){
     //   sleep1(0,100000);
     // }
     // iJustWentFoward=!iJustWentFoward;
-  }else if (leftShift==boundarySum){
+  }else if (leftShift>=boundarySum){
     // left turn option
     printf("I can turn left\n");
     if (canGoFoward){iCanGoFoward();return 0;};
-  }else if (rightShift==boundarySum){
+  }else if (rightShift>=boundarySum){
     // right turn option
     printf("I can turn right\n");
     if (canGoFoward){iCanGoFoward();return 0;};
