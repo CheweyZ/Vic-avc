@@ -261,6 +261,7 @@ void reverseAndTurn(){
 }
 
 void lineFollow(){ /**Needs adjustment*/
+    take_picture();
     cameraScannerBM();
 }
 
@@ -333,7 +334,6 @@ void mazeSectionDoorTest(){ //should be run at the same time as the maze code
 void redLineCode(){
     if (redLineSect == 1)
     {
-        take_picture();
         mazeIntroSection();    
     }
     else if (redLineSect == 2)
@@ -345,6 +345,7 @@ void redLineCode(){
 void temp(){
     if (redLineSect < 2)
     {
+        take_picture();
         redLineCode();
     }
     if (redLineSect > 0)
