@@ -45,9 +45,9 @@ void reverseAndTurn(){
     //  backs out of the maze
     //  and turn 180
     mazeTurn(60,60); //reversing but is facing other direction
-    sleep1(5,0);
-    mazeTurn(-80,80); //rotates on spot
-    sleep1(3,0);
+    sleep1(0,100000);
+    mazeTurn(-60,60); //rotates on spot
+    sleep1(0,300000);
 }
 
 void lineFollow(){ /**Needs adjustment*/
@@ -86,8 +86,8 @@ void mazeIntroSection(){
     {
         if (redSensFirstTime == 1)
         {
-	        reverseAndTurn(); //gets out of maze and then turns 180
-	        redSensFirstTime = 0;
+            reverseAndTurn(); //gets out of maze and then turns 180
+            redSensFirstTime = 0;
         }
         lineFollow(); //does line test to get towards maze again but reverse
         if (scan_left > 300 && scan_right > 300)
@@ -157,7 +157,7 @@ int main (){
     {
         temp();
         sleep1(0,100000);
-        printf("%f %f\n", red1, redLineSect);
+        //printf("%f %f\n", red1, redLineSect);
     }
     
     mazeTurn(0,0);
