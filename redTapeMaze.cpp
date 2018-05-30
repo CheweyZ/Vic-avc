@@ -11,7 +11,7 @@
 /////////////////////////////////
 
 int red1 = 0;
-int redLineSect = 0;
+int redLineSect = 1;
 int redSensFirstTime = 1;
 /////////////////////////////////
 // maze seciton vars that also is used here
@@ -51,8 +51,8 @@ void reverseAndTurn(){
 }
 
 void lineFollow(){ /**Needs adjustment*/
-    take_picture();
-    printf("needs line follow code here\n");
+    //take_picture();
+    //printf("needs line follow code here\n");
 }
 
 
@@ -68,7 +68,7 @@ int redTest() {
             red_total = red_total + red; //add the output to red_total
         }
     }
-    printf("red_total = %d \n", red_total);
+    //printf("red_total = %d \n", red_total);
     if( red_total > 4000) { //if significant enough red has been found
         returnVal = 1;
         printf("red line\n");
@@ -77,7 +77,7 @@ int redTest() {
 }
 
 void mazeIntroSection(){
-    printf("mazeIntroSection\n");
+    //printf("mazeIntroSection\n");
     if (red1 == 0)
     {
         red1 = redTest();
@@ -103,7 +103,7 @@ void mazeIntroSection(){
 }
 
 void mazeSectionDoorTest(){ //should be run at the same time as the maze code
-    printf("mazeDoorTest\n");
+    //printf("mazeDoorTest\n");
     red1 = redTest();
     if (red1 == 1)
     {
@@ -124,7 +124,7 @@ void mazeSectionDoorTest(){ //should be run at the same time as the maze code
 }
 
 void redLineCode(){
-    printf("run redLineCode\n");
+    //printf("run redLineCode\n");
     if (redLineSect == 1)
     {
         mazeIntroSection();    
@@ -141,7 +141,7 @@ void temp(){
         take_picture();
         redLineCode();
     }
-    if (redLineSect > 0)
+    if (redLineSect > 1)
     {
         //call mazeSection();
     }
@@ -151,7 +151,7 @@ void temp(){
 int main (){
     init();
     red1 = 0;
-    redLineSect = 0;
+    redLineSect = 1;
 
     for (int i = 0; i < 200; i++)
     {
