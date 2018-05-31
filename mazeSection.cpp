@@ -182,3 +182,36 @@ int main (){
   printf("finished!\n");
 return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////
+
+bool swingLeft = false;
+
+
+if (scan_right < 250 && scan_left < 250 && mazeTurning%2 == 0)
+{
+	if (swingLeft)
+	{
+		mazeTurning = 2;
+	}
+	else
+	{
+		mazeTurning = -2;
+	}
+	swingLeft = !swingLeft;
+}
+
