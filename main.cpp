@@ -35,7 +35,7 @@ int reverseSleepTime=200000;
 
 int turnIgnoreTime= 300000;
 
-int loopForceTimer=5000;
+int loopForceTimer=3500;
 
 
 int scan_front;
@@ -47,6 +47,7 @@ int l = 0;
 int f = 1;
 int r = 2;
 
+bool swingLeft = false;
 // input pin numbers for motors
 int leftMotor = 1;
 int rightMotor = 2;
@@ -173,8 +174,8 @@ void testTurn(){
   if (scan_front > 490) //when robot is way too close to wall
   {
   mazeTurn(-60,-60);
-  sleep1(0,350000);
-  printf("backing back");
+  sleep1(0,200000);
+  // printf("backing back");
   }
 
   //reallign if front is too close on one side if nec
@@ -186,6 +187,26 @@ void testTurn(){
   { // realign left
     mazeTurning = -2;
   }
+  
+  if (scan_right < 250 && scan_left < 250 && mazeTurning%2 == 0)
+{
+	if (swingLeft)
+	{
+		// mazeTurning = -2;
+    mazeTurn(60,-60);
+    sleep1(0,150000);
+    // mazeTurn(-60,-60);
+    // sleep1(0,200000);
+	}
+	else
+	{
+		// mazeTurning = 2;
+    mazeTurn(-60,60);
+    sleep1(0,150000);
+	}
+	swingLeft = !swingLeft;
+  return;
+}
 
 }
 
@@ -264,7 +285,7 @@ void reverseAndTurn(){
     mazeTurn(maxMotorSpeed,maxMotorSpeed); //reversing but is facing other direction
     sleep1(1,0);
     mazeTurn(maxMotorSpeed,-maxMotorSpeed); //rotates on spot
-    sleep1(0,400000);
+    sleep1(0,300000);
 }
 
 void iCanGoFoward(){
@@ -523,7 +544,8 @@ int main (){
   // set_motor(1,-100);
   // sleep1(5,0);
   
-  while (x<loopForceTimer) {
+  // while (x<loopForceTimer) {
+  while (true) {
     take_picture();
     if (!ivSeenRed){
       cameraScanner();
