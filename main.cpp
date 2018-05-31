@@ -25,15 +25,34 @@ int reverseThreshold=15; //15 prior
 int blackWhiteTolerance=30;
 int baseWhiteMin=110;
 
-int tThres=200;
+bool ivSeenRed=false;
+
+int tThres=200;//was 200
 // bool iJustWentFoward=false;
 // int reverseBoostForShift=70;
 
 int reverseSleepTime=200000;
 
-int turnIgnoreTime= 200000;
+int turnIgnoreTime= 300000;
 
-int loopForceTimer=2500;
+int loopForceTimer=5000;
+
+
+int scan_front;
+int scan_right;
+int scan_left;
+
+// input pin numbers
+int l = 0;
+int f = 1;
+int r = 2;
+
+// input pin numbers for motors
+int leftMotor = 1;
+int rightMotor = 2;
+
+// var to know if turning/adjusting/going straight while in maze
+int mazeTurning = 0; //(-ve(Left),0(Straight),+ve(Right))
 
 // returns color component (color==0 -red,color==1-green,color==2-blue
 // color == 3 - luminocity
@@ -95,17 +114,161 @@ void reverse(int amt){
   rMSpd=-amt;//+50
   lMSpd=-amt;
   updateMotorSpeed();
-  printf("Sleep Start\n");
+  // printf("Sleep Start\n");
   sleep1(0,500000);
   rMSpd=0;
   lMSpd=0;
   updateMotorSpeed();
   sleep1(0,500000);
-  printf("Sleep End\n");
+  // printf("Sleep End\n");
+}
+
+void mazeTurn(int lSpeed, int rSpeed){  //change to main codes turn
+    // printf("left: %d ... ", lSpeed);
+    // printf("right: %d\n", rSpeed);
+    set_motor(2,lSpeed);
+    set_motor(1,rSpeed);
+}
+
+
+void mazeForward(){ //goes straight
+  mazeTurn(50,50);
+}
+
+/*
+void turnOnSpot(int speed){
+  printf("%d\n", speed);
+  set_motor(leftMotor,speed);
+  set_motor(rightMotor,(-1)*speed);
+}
+*/
+
+
+void scanValueUpdate()
+{
+// updating values
+  scan_front = read_analog(f); // front
+  scan_right = read_analog(r); // right
+  scan_left = read_analog(l); // left
+}
+
+void testTurn(){
+  // Tests sensing for wall infront
+  if (scan_front > 440 ) //if robot is too close to the front
+  {
+    if (scan_right < 300 ) //there seems to be no wall: r
+    {
+      mazeTurning = 1;
+    } 
+    else if (scan_left < 300 ) //there seems to be no wall: l
+    {
+      mazeTurning = -1;
+    }
+    else //there is no free wall f, r & l
+    {
+      mazeTurning = 10;
+    }
+  }
+
+  if (scan_front > 490) //when robot is way too close to wall
+  {
+  mazeTurn(-60,-60);
+  sleep1(0,350000);
+  printf("backing back");
+  }
+
+  //reallign if front is too close on one side if nec
+  if (scan_left > 400 && mazeTurning%2 == 0)
+  { // realign right
+    mazeTurning = 2;
+  }
+  else if (scan_right > 400 && mazeTurning%2 == 0)
+  { // realign left
+    mazeTurning = -2;
+  }
+
+}
+
+void mazeMove(){
+  //Turning/reallign function
+
+  if (mazeTurning == 1) //Turning right
+  {
+    mazeTurn(60,-60);
+    if (scan_front < 400) //if large enough gap in front of robot
+    {
+      mazeTurning = 0;
+      if (scan_left < 300 && scan_right < 300)
+      {
+	      mazeTurn(60,-60);
+	      sleep1(0,150000);
+  	  }
+    } 
+  }
+  else if (mazeTurning == -1) //Turning left
+  {
+    mazeTurn(-60,60); 
+    if (scan_front < 400) //if large enough gap in front of robot
+    {
+      mazeTurning = 0;
+      if (scan_left < 300 && scan_right < 300)
+      {
+	      mazeTurn(-60,60);
+	      sleep1(0,150000);
+      }
+
+    }
+  }
+  else if (mazeTurning == 2) //realign right
+  {
+    mazeTurn(60,45);
+    if (scan_left < 400)
+    { // if scan of each wall is roughly similar
+      mazeTurning = 0;
+    }
+  }
+  else if (mazeTurning == -2) //realign left
+  {
+    mazeTurn(45,60);
+    if (scan_right < 400)
+    {
+      mazeTurning = 0;
+    }
+  }
+  else if (mazeTurning == 10)
+  { // going backwards but shouldnt be needed to be called
+    mazeTurn(-50,-50);
+    if (scan_front < 400)
+    {
+      mazeTurning = 0;
+    }
+
+  }
+  // printf("front: %d left: %d right: %d turnNum: %d\n",scan_front,scan_left,scan_right,mazeTurning);
+  // going straight or updated to go straight
+  if (mazeTurning == 0)
+  {
+    mazeForward();
+  }
+
+}
+
+void reverseAndTurn(){
+    //runs code that makes the robot
+    //  backs out of the maze
+    //  and turn 180
+    mazeTurn(maxMotorSpeed,maxMotorSpeed); //reversing but is facing other direction
+    sleep1(1,0);
+    mazeTurn(-maxMotorSpeed,maxMotorSpeed); //rotates on spot
+    sleep1(1,400000);
+    mazeTurn(maxMotorSpeed,maxMotorSpeed); //reversing but is facing other direction
+    sleep1(1,0);
+    mazeTurn(maxMotorSpeed,-maxMotorSpeed); //rotates on spot
+    sleep1(0,400000);
 }
 
 void iCanGoFoward(){
-  printf("Can also go foward\n");
+  // printf("Can also go foward\n");
   lMSpd=maxMotorSpeed;
   rMSpd=maxMotorSpeed;
   updateMotorSpeed();
@@ -220,6 +383,7 @@ int cameraScanner(){
   // printf("MidLeftPoint:%d MidRightPoint:%d\n", midLeftPoint,midRightPoint);
   int leftShift=0;
   int rightShift=0;
+  int red_total = 0;
   for (int i = 0; i <320;i++){
   // whi[i]= 0 ;
   int pix = get_pixel(scan_row,i,3);
@@ -232,7 +396,19 @@ int cameraScanner(){
     }
     // whi[i] = 1;
   }
+  int red = get_pixel(scan_row,i,0); //check for red
+  int green = get_pixel(scan_row,i,1); //check for green
+  int blue = get_pixel(scan_row,i,2); //check for blue
+  if ((red > 200) && (green < 100) && (blue < 100)){
+      red_total = red_total + red; //add the output to red_total
   }
+  }
+  
+   if( red_total > 1000) {
+     reverseAndTurn();
+     ivSeenRed=true;
+     return 0;
+   }
   
   int secondaryLeft=0;
   int secondaryRight=0;
@@ -294,11 +470,11 @@ int cameraScanner(){
     // iJustWentFoward=!iJustWentFoward;
   }else if (leftShift>=boundarySum){
     // left turn option
-    printf("I can turn left\n");
+    // printf("I can turn left\n");
     if (canGoFoward){iCanGoFoward();return 0;};
   }else if (rightShift>=boundarySum){
     // right turn option
-    printf("I can turn right\n");
+    // printf("I can turn right\n");
     if (canGoFoward){iCanGoFoward();return 0;};
   }else if (rightShift==0&& leftShift==0){
     printf("Lets check is there still a path here?\n");
@@ -315,6 +491,12 @@ int cameraScanner(){
   return 0;
 }
 
+void mazeSection()
+{
+  scanValueUpdate();
+  testTurn();
+  mazeMove();
+}
 
 void passwordGate(){
 	char serverAddr[15]={'1','3','0','.','1','9','5','.','6','.','1','9','6'};
@@ -330,8 +512,10 @@ void passwordGate(){
 int main (){
   int x=0;
   init();
-  // passwordGate();
-  // sleep1(1,0);
+  
+  reverseAndTurn();
+  passwordGate();
+  sleep1(1,0);
   
   
   // set_motor(1,100);
@@ -341,7 +525,11 @@ int main (){
   
   while (x<loopForceTimer) {
     take_picture();
-    cameraScanner();
+    if (!ivSeenRed){
+      cameraScanner();
+    }else{
+      mazeSection();
+    }
     // sleep1(0,50000);
     x++;
   }
