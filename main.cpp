@@ -513,7 +513,7 @@ int main (){
   int x=0;
   init();
   
-  reverseAndTurn();
+  // reverseAndTurn();
   passwordGate();
   sleep1(1,0);
   
